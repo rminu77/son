@@ -1,0 +1,854 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>책, 운동, 악기</title><style>
+/* cspell:disable-file */
+/* webkit printing magic: print all background colors */
+html {
+	-webkit-print-color-adjust: exact;
+}
+* {
+	box-sizing: border-box;
+	-webkit-print-color-adjust: exact;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+@media only screen {
+	body {
+		margin: 2em auto;
+		max-width: 900px;
+		color: rgb(55, 53, 47);
+	}
+}
+
+body {
+	line-height: 1.5;
+	white-space: pre-wrap;
+}
+
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+/* Override strong tags inside headings to maintain consistent weight */
+h1 strong,
+h2 strong,
+h3 strong {
+	font-weight: 600;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+h1 {
+	font-size: 1.875rem;
+	margin-top: 1.875rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+	margin-top: 1.5rem;
+}
+
+h3 {
+	font-size: 1.25rem;
+	margin-top: 1.25rem;
+}
+
+.source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 10px;
+	padding: 1rem;
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+
+	table.collection-content {
+		width: 100%;
+		table-layout: fixed;
+	}
+
+	table.collection-content th,
+	table.collection-content td {
+		overflow-wrap: anywhere;
+	}
+
+	table.collection-content td > .user,
+	table.collection-content td > time {
+		white-space: pre-wrap;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content-wrapper {
+	overflow-x: auto;
+}
+
+@media only print {
+	.collection-content-wrapper {
+		overflow-x: visible;
+	}
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.collection-content td {
+	white-space: pre-wrap;
+	word-break: break-word;
+}
+
+.column-list {
+	display: flex;
+	gap: 46px;
+}
+
+.column {
+	min-width: 0;
+	overflow: hidden;
+}
+
+.column > *:first-child {
+	margin-top: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding: 0.125rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+table {
+	border-collapse: collapse;
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	padding-inline-start: 0;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol.numbered-list.numbered-list-digits-2 {
+	padding-inline-start: 2em;
+}
+
+ol.numbered-list.numbered-list-digits-3plus {
+	padding-inline-start: 2.4em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+.page-description {
+	margin-bottom: 2em;
+}
+
+.simple-table {
+	margin-top: 1em;
+	font-size: 0.875rem;
+	empty-cells: show;
+}
+.simple-table td {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table th {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table-header-color {
+	background: rgb(247, 246, 243);
+	color: black;
+}
+.simple-table-header {
+	font-weight: 500;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.callout img.notion-static-icon {
+	width: 1em;
+	height: 1em;
+}
+
+.callout p {
+	margin: 0;
+}
+
+.callout h1,
+.callout h2,
+.callout h3 {
+	margin: 0 0 0.6rem;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	max-height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	transform: scale(1.5);
+	margin-right: 0.6em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code-wrap {
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+blockquote.quote-large {
+	font-size: 1.25em;
+}
+
+.bookmark {
+	text-decoration: none;
+	max-height: 8em;
+	padding: 0;
+	display: flex;
+	width: 100%;
+	align-items: stretch;
+}
+
+.bookmark-title {
+	font-size: 0.85em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 1.75em;
+	white-space: nowrap;
+}
+
+.bookmark-text {
+	display: flex;
+	flex-direction: column;
+}
+
+.bookmark-info {
+	flex: 4 1 180px;
+	padding: 12px 14px 14px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.bookmark-image {
+	width: 33%;
+	flex: 1 1 180px;
+	display: block;
+	position: relative;
+	object-fit: cover;
+	border-radius: 1px;
+}
+
+.bookmark-description {
+	color: rgba(55, 53, 47, 0.6);
+	font-size: 0.75em;
+	overflow: hidden;
+	max-height: 4.5em;
+	word-break: break-word;
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	margin-top: 0.25em;
+}
+
+.sans { font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", "Noto Sans Arabic", "Noto Sans Hebrew", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, ui-serif, serif; }
+.mono { font-family: iawriter-mono, Nitti, Menlo, Courier, monospace; }
+.pdf .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", "Noto Sans Arabic", "Noto Sans Hebrew", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK JP'; }
+.pdf:lang(zh-CN) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", "Noto Sans Arabic", "Noto Sans Hebrew", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC'; }
+.pdf:lang(zh-TW) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", "Noto Sans Arabic", "Noto Sans Hebrew", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK TC'; }
+.pdf:lang(ko-KR) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", "Noto Sans Arabic", "Noto Sans Hebrew", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK KR'; }
+.pdf .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK JP'; }
+.pdf:lang(zh-CN) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK SC'; }
+.pdf:lang(zh-TW) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK TC'; }
+.pdf:lang(ko-KR) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK KR'; }
+.pdf .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.highlight-default {
+	color: rgba(44, 44, 43, 1);
+}
+.highlight-gray {
+	color: rgba(125, 122, 117, 1);
+	fill: rgba(125, 122, 117, 1);
+}
+.highlight-brown {
+	color: rgba(159, 118, 90, 1);
+	fill: rgba(159, 118, 90, 1);
+}
+.highlight-orange {
+	color: rgba(210, 123, 45, 1);
+	fill: rgba(210, 123, 45, 1);
+}
+.highlight-yellow {
+	color: rgba(203, 148, 52, 1);
+	fill: rgba(203, 148, 52, 1);
+}
+.highlight-teal {
+	color: rgba(80, 148, 110, 1);
+	fill: rgba(80, 148, 110, 1);
+}
+.highlight-blue {
+	color: rgba(56, 125, 201, 1);
+	fill: rgba(56, 125, 201, 1);
+}
+.highlight-purple {
+	color: rgba(154, 107, 180, 1);
+	fill: rgba(154, 107, 180, 1);
+}
+.highlight-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.highlight-red {
+	color: rgba(207, 81, 72, 1);
+	fill: rgba(207, 81, 72, 1);
+}
+.highlight-default_background {
+	color: rgba(44, 44, 43, 1);
+}
+.highlight-gray_background {
+	background: rgba(42, 28, 0, 0.07);
+}
+.highlight-brown_background {
+	background: rgba(139, 46, 0, 0.086);
+}
+.highlight-orange_background {
+	background: rgba(224, 101, 1, 0.129);
+}
+.highlight-yellow_background {
+	background: rgba(211, 168, 0, 0.137);
+}
+.highlight-teal_background {
+	background: rgba(0, 100, 45, 0.09);
+}
+.highlight-blue_background {
+	background: rgba(0, 124, 215, 0.094);
+}
+.highlight-purple_background {
+	background: rgba(102, 0, 178, 0.078);
+}
+.highlight-pink_background {
+	background: rgba(197, 0, 93, 0.086);
+}
+.highlight-red_background {
+	background: rgba(223, 22, 0, 0.094);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(125, 122, 117, 1);
+	fill: rgba(125, 122, 117, 1);
+}
+.block-color-brown {
+	color: rgba(159, 118, 90, 1);
+	fill: rgba(159, 118, 90, 1);
+}
+.block-color-orange {
+	color: rgba(210, 123, 45, 1);
+	fill: rgba(210, 123, 45, 1);
+}
+.block-color-yellow {
+	color: rgba(203, 148, 52, 1);
+	fill: rgba(203, 148, 52, 1);
+}
+.block-color-teal {
+	color: rgba(80, 148, 110, 1);
+	fill: rgba(80, 148, 110, 1);
+}
+.block-color-blue {
+	color: rgba(56, 125, 201, 1);
+	fill: rgba(56, 125, 201, 1);
+}
+.block-color-purple {
+	color: rgba(154, 107, 180, 1);
+	fill: rgba(154, 107, 180, 1);
+}
+.block-color-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.block-color-red {
+	color: rgba(207, 81, 72, 1);
+	fill: rgba(207, 81, 72, 1);
+}
+.block-color-default_background {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray_background {
+	background: rgba(240, 239, 237, 1);
+}
+.block-color-brown_background {
+	background: rgba(245, 237, 233, 1);
+}
+.block-color-orange_background {
+	background: rgba(251, 235, 222, 1);
+}
+.block-color-yellow_background {
+	background: rgba(249, 243, 220, 1);
+}
+.block-color-teal_background {
+	background: rgba(232, 241, 236, 1);
+}
+.block-color-blue_background {
+	background: rgba(229, 242, 252, 1);
+}
+.block-color-purple_background {
+	background: rgba(243, 235, 249, 1);
+}
+.block-color-pink_background {
+	background: rgba(250, 233, 241, 1);
+}
+.block-color-red_background {
+	background: rgba(252, 233, 231, 1);
+}
+.select-value-color-default { background-color: rgba(42, 28, 0, 0.07); }
+.select-value-color-gray { background-color: rgba(28, 19, 1, 0.11); }
+.select-value-color-brown { background-color: rgba(127, 51, 0, 0.156); }
+.select-value-color-orange { background-color: rgba(196, 88, 0, 0.203); }
+.select-value-color-yellow { background-color: rgba(209, 156, 0, 0.282); }
+.select-value-color-green { background-color: rgba(0, 96, 38, 0.156); }
+.select-value-color-blue { background-color: rgba(0, 118, 217, 0.203); }
+.select-value-color-purple { background-color: rgba(92, 0, 163, 0.141); }
+.select-value-color-pink { background-color: rgba(183, 0, 78, 0.152); }
+.select-value-color-red { background-color: rgba(206, 24, 0, 0.164); }
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+	
+</style></head><body><article id="36254d01-27a8-80d0-89b2-f1c989982bb4" class="page sans"><header><div class="page-header-icon undefined"><span class="icon">🤖</span></div><h1 class="page-title" dir="auto">책, 운동, 악기</h1><p class="page-description" dir="auto"></p></header><div class="page-body"><div style="display:contents" dir="auto"><p id="36254d01-27a8-80a8-a553-dd54be19f9f0" class="">건강하게 성장했으면 좋겠어.</p></div><div style="display:contents" dir="auto"><p id="36254d01-27a8-8066-952e-cd8721125604" class="">바보인 채로 어른이 되기 보다 교양있고 멋진 진짜 어른이 되었으면 좋겠어.</p></div><div style="display:contents" dir="auto"><p id="36254d01-27a8-80aa-b1b3-eb861d1385cd" class="">그런 사람이 AI시대에도 살아남아. 아니 그런 사람은 언제나 어떤 시대에도 사람들이 찾아왔어.</p></div><div style="display:contents" dir="ltr"><figure id="36254d01-27a8-80ea-9128-e26f7fe73573"><a href="https://youtu.be/VQDV8IJx-Us?si=ospR9sh2SQHwxefE&amp;t=96" class="bookmark source"><div class="bookmark-info"><div class="bookmark-text"><div class="bookmark-title">“AI 때문에 할 줄 모르게 된 것들이 많아졌다” (김재인 경희대 교수)</div><div class="bookmark-description">누구나 처음은 있습니다. 
+어렵고 복잡하게 느껴지는 &#x27;마음의 벽&#x27;을  깨부숴야 새로운 길이 열립니다.
+지금 티타임즈와 함께 바이브코딩의 첫 걸음을 내딛어보세요
+
+💻코딩 몰라도 된다! 업무자동화를 위한 바이브코딩 강좌
+
+· 실습 강연으로 따라 해보는 AI업무 자동화!
+· 업계 최고 AI교육 전문가 4인이 전수하는 바이브코딩!
+· 스마트한 AI활용부터 AI에이전트 만드는 방법까지!
+
+📍 기업 구매 문의 :  02-724-7718, ttimes6000@gmail.com
+📍 개인 구매 : 검색창에 &#x27;티타임즈 라이브클래스&#x27; 검색 후
+👉강좌구매 바로가기 : https://ttimes.liveklass.com/classes/297649
+
+-----------------------------------------------------------------------------------------------------------------------
+
+“AI를 사용하지 않으면 도태된다, 그럴 영역이 분명히 있어요. 그런데 AI를 사용하면 도태될 영역이 굉장히 많다고 생각해요. 젊은 세대를 보면 디스킬 상태에 빠지고 있는 것 같아요. 할 줄 알던 게 사라져 가고, 아예 스킬 자체가 쌓이지 않는거죠. 초등학생 수준의 인지적 능력을 가진 상태로 몸은 성인이 되는 ‘인지적 성인병’이 우려되는 거죠. 머리 써서 해야 되는 일을 할 줄 모르게 된다는 겁니다.” 
+
+AI 시대에 학생이라면 무엇을 배워야 할까요? 기술철학자 김재인 경희대 비교문화연구소 교수의 이야기를 들어봅니다.
+
+편집: 허재석 영상디자이너
+촬영: 장민주 PD
+진행: 이사민 기자
+섬네일: 박수형 영상디자이너
+
+▶티타임즈 공식 홈페이지
+http://www.ttimes.co.kr/index.html
+▶비즈니스 문의 
+ttimes6000@gmail.com
+
+#AI #교육 #디스킬제너레이션 #김재인
+
+00:00 &#x27;업무 자동화를 위한 바이브코딩 강좌&#x27; 소개
+00:20 하이라이트
+01:25 김재인 교수 소개
+01:50 학생은 AI 쓰지 말아라?!
+06:03 어릴 때부터 AI를 쓰면 &#x27;이 병&#x27;에 걸린다
+11:37 AI에 질문을 하지 말아야 하는 이유
+21:06 인문학자는 AI에 대해 논하지 말라고?
+22:38 AI업계는 왜 인문학자의 말을 경청해야 할까?</div></div><div class="bookmark-href"><img src="https://www.youtube.com/s/desktop/47009d78/img/favicon_144x144.png" class="icon bookmark-icon"/>https://youtu.be/VQDV8IJx-Us?si=ospR9sh2SQHwxefE&amp;t=96</div></div><img src="https://i.ytimg.com/vi/VQDV8IJx-Us/maxresdefault.jpg" class="bookmark-image"/></a></figure></div><div style="display:contents" dir="ltr"><figure id="36254d01-27a8-80b2-9e3b-eb3cfa4eb93d"><a href="https://youtu.be/JOpF8yrE1t8?si=YD10Pd6TOtcZnKkD&amp;t=408" class="bookmark source"><div class="bookmark-info"><div class="bookmark-text"><div class="bookmark-title">&quot;AI한테 질문하지 마세요.&quot; 앞으로 5년, 가장 빨리 사라질 직원ㅣ지식인초대석 EP.133 (김대식 X 김혜연)</div><div class="bookmark-description">오늘은 김대식 교수님과 김혜연 안무가님을 모시고
+
+AI시대 가장 중요해지는 인간의 능력에 대해 들어봤습니다.
+
+영상이 유익 했다면 구독!! 영상이 재밌으셨다면 좋아요 버튼을 눌러주세요!
+
+#김대식 #김혜연 #지식인사이드 #AI #회사 #직업 #고소득
+
+00:00 인트로
+00:30 구독자 인사
+03:01 AI가 일을 잘할수록 인간의 일이 늘어나는 이유
+06:47 5년 뒤 ‘이 능력’ 가진 사람들이 희귀해질 겁니다
+11:29 “하루만 투자하세요” 내 능력 ‘10배’ 향상시키는 법
+13:33 ‘이걸’ 빨리 깨달은 기업이 크게 성장할 겁니다
+17:09 AI 시대 가장 빨리 도태될 회사의 특징 ‘1가지’
+20:59 AI가 인간보다 일을 잘할 때 생겨날 의외의 직업
+
+*본 영상은 26년 5월 7일에 촬영되었습니다.
+
+ㅡ
+
+👇지식인사이드에 출연을 원하신다면 여기를 눌러주세요
+https://forms.gle/u4LxVcwFdhvkLH8m6
+knowledgeinside7@gmail.com
+
+👇 다양한 채널에서 지식인사이드의 지식을 얻고 싶다면 여기를 눌러주세요
+인스타그램: https://www.instagram.com/knowledgeins_kr/
+페이스북: https://www.facebook.com/knowledgeIns7?mibextid=LQQJ4d
+네이버 TV: https://tv.naver.com/purejboy2
+틱톡: https://www.tiktok.com/@allstorieskr?lang=ko-KR
+네이버 카페: https://cafe.naver.com/knowledgeins</div></div><div class="bookmark-href"><img src="https://www.youtube.com/s/desktop/14cba078/img/favicon_144x144.png" class="icon bookmark-icon"/>https://youtu.be/JOpF8yrE1t8?si=YD10Pd6TOtcZnKkD&amp;t=408</div></div><img src="https://i.ytimg.com/vi/JOpF8yrE1t8/maxresdefault.jpg" class="bookmark-image"/></a></figure></div><div style="display:contents" dir="auto"><hr id="36254d01-27a8-80fd-9de9-ce56f3c25aab"/></div><div style="display:contents" dir="auto"><p id="36254d01-27a8-8014-b5bd-d5ea080f63a8" class=""><strong>아리스토텔레스는 ‘인간은 생각하는 동물이다.’ 데카르트는 ‘나는 생각한다. 고로 나는 존재한다.’고 하고 있다. </strong></p></div><div style="display:contents" dir="auto"><p id="36254d01-27a8-8065-8be1-e4b02897d3b4" class="">인간의 생사는 생각이 만들어지고 생각이 없어지는 것을 의미하기도 한다. 그리고 인간의 사유는 자유를 가능하게 한다. 이에 고대 철학자부터 현대 과학자까지 인간은 올바른 생각과 그에 따른 올바른 판단으로 올바르게 행동하는 방법에 대하여 끊임없이 연구하고 있다.</p></div><div style="display:contents" dir="auto"><p id="36254d01-27a8-80fa-a8db-effaeebd3ce8" class="">이러한 사고의 한 형태를 <strong>비판적 사고</strong>라고 한다. 비판적 사고는 더 논리적으로 추론하고, 정교하게 정보를 처리하고, 문제의 다양한 측면을 보도록 하여 좀 더 엄격한 결론을 도출할 수 있도록 한다. 비판적 사고를 뒷받침하는 것이 <strong>과학적 이론</strong>이다. 비판적 사고는 증거를 바탕으로 논리적이고 과학적인 사고, 즉 신중한 생각을 바탕으로 할 것을 요구한다.</p></div><div style="display:contents" dir="auto"><p id="36254d01-27a8-809c-8d82-d8cc273386de" class=""><strong>올바른 생각은 인간을 인간답게 살 수 있도록 한다.</strong></p></div><div style="display:contents" dir="auto"><hr id="36254d01-27a8-8037-8cd5-e67fa3ba57e4"/></div><div style="display:contents" dir="auto"><p id="36254d01-27a8-8002-a5d4-e5c529e88096" class="">올바른 생각을 하는 연습은 읽고, 쓰고, 말하는 행위</p></div><div style="display:contents" dir="auto"><p id="36254d01-27a8-8087-9fc1-cb76afb0eab0" class="">책을 읽고 지식을 습득하고 고민하고 판단하고 기록하고 사람들과 토론하는 모든 행위가 올바른 생각을 갖기 위한 연습과정</p></div><div style="display:contents" dir="ltr"><figure id="36254d01-27a8-8017-8784-f47525e26015"><a href="https://www.youtube.com/watch?v=QpYJ-mjqzIE" class="bookmark source"><div class="bookmark-info"><div class="bookmark-text"><div class="bookmark-title">부모 학력 · 소득 격차도 극복한다?📚 책 많이 읽은 저소득층 자녀 VS 독서 안한 중산층 자녀의 수능 성적과 괜찮은 일자리 취업, 얼마나 차이날까 |독자생존| #교육다큐멘터리</div><div class="bookmark-description">✔️ 이 영상은 2024년 10월 24일에 방송된 ＜EBS 다큐멘터리K  - 독자생존 제3부  &#x27;공부의 힘&#x27;＞의 일부입니다.
+
+#ebsi #독자생존 #독서의힘 #공부의힘 #꼼꼼하게읽기 
+#자녀교육 #학부모수업 #계층사다리 #대기업취업 #질문하는아이
+
+EBSi 국가대표 고교 강의 ▶ http://www.ebsi.co.kr</div></div><div class="bookmark-href"><img src="https://www.youtube.com/s/desktop/14cba078/img/favicon_144x144.png" class="icon bookmark-icon"/>https://www.youtube.com/watch?v=QpYJ-mjqzIE</div></div><img src="https://i.ytimg.com/vi/QpYJ-mjqzIE/maxresdefault.jpg" class="bookmark-image"/></a></figure></div><div style="display:contents" dir="ltr"><figure id="36254d01-27a8-8048-9da2-d87525870ab7"><a href="https://www.youtube.com/watch?v=g0iVwhIlVpg" class="bookmark source"><div class="bookmark-info"><div class="bookmark-text"><div class="bookmark-title">서울대생의 80%가 중학생 때 책을 읽었고, 65%가 고등학교 때 책을 읽었다 | 사교육 대신 독서로 두 딸을 서울대와 카이스트에 보낸 엄마 (ft.독서 효과) | #교육다큐</div><div class="bookmark-description">✔️ 이 영상은 2024년 10월 24일에 방송된 ＜EBS 다큐멘터리K  - 독자생존 제3부  &#x27;공부의 힘&#x27;＞의 일부입니다.
+
+#ebsi #독자생존 #공부의힘 #독서가사교육을이긴다 #독서전략
+#자녀교육 #학부모수업 #서울대 #카이스트 #독서교육 #나민애교수 
+
+EBSi 국가대표 고교 강의 ▶ http://www.ebsi.co.kr</div></div><div class="bookmark-href"><img src="https://www.youtube.com/s/desktop/14cba078/img/favicon_144x144.png" class="icon bookmark-icon"/>https://www.youtube.com/watch?v=g0iVwhIlVpg</div></div><img src="https://i.ytimg.com/vi/g0iVwhIlVpg/maxresdefault.jpg" class="bookmark-image"/></a></figure></div><div style="display:contents" dir="ltr"><figure id="36254d01-27a8-802f-b98e-ff384b1fe106"><a href="https://youtu.be/spMhZB7aBJQ?si=G4anjvXxAv5ad5JG&amp;t=734" class="bookmark source"><div class="bookmark-info"><div class="bookmark-text"><div class="bookmark-title">[#알쓸별잡] 문해력이 붕괴하고 있다?💥 세상을 바라보는 시각에 영향을 미치는 &#x27;문자&#x27;의 중요성📚</div><div class="bookmark-description">티빙에서 스트리밍 : https://tving.onelink.me/xHqC/30a78d6f
+
+#알쓸별잡 #장항준 #김민하 #이동진 #유현준 #김상욱 #심채경
+
+we’re :DIGGLE family
+
+#티빙에서스트리밍</div></div><div class="bookmark-href"><img src="https://www.youtube.com/s/desktop/47009d78/img/favicon_144x144.png" class="icon bookmark-icon"/>https://youtu.be/spMhZB7aBJQ?si=G4anjvXxAv5ad5JG&amp;t=734</div></div><img src="https://i.ytimg.com/vi/spMhZB7aBJQ/maxresdefault.jpg" class="bookmark-image"/></a></figure></div><div style="display:contents" dir="auto"><hr id="36254d01-27a8-8020-aa61-d144e53feff6"/></div><div style="display:contents" dir="auto"><p id="36254d01-27a8-804b-bd4a-c08e37e22f02" class=""><a href="https://www.youtube.com/results?search_query=%EB%87%8C%EC%99%80+%EC%9A%B4%EB%8F%99">운동</a> 음악(악기)</p></div><div style="display:contents" dir="ltr"><figure id="36254d01-27a8-80af-aac5-d625ca1d6c79"><a href="https://www.youtube.com/watch?v=qz5eTRM2U8Q" class="bookmark source"><div class="bookmark-info"><div class="bookmark-text"><div class="bookmark-title">달릴 때 우리 몸과 뇌에선 어떤 일이 일어날까? 🧠 달리기의 재발견 | 지식채널e</div><div class="bookmark-description">운동인가, 뇌를 여는 열쇠인가? 과학이 밝힌 달리기의 재발견
+
+과연 달리기는 단지 체력을 기르는 운동일까?
+
+이 질문에 답하기 위해, 다양한 연구자들이 달리기가 인간에게 미치는 영향을 과학적으로 관찰해왔다. 
+일본의 쓰쿠바대 연구팀은 단 10분간의 가벼운 조깅만으로도 전전두엽 혈류량이 증가하고, 그로 인해 학습 속도와 기억 유지력이 눈에 띄게 향상된다고 한다. 
+
+운동을 강조하는 정신과 전문의로 유명한 하버드 대학의 존 레이티 교수는 
+“운동 직후의 뇌는 학습에 최적화된 상태”라며, 달리기가 뇌를 ‘학습 가능한 모드’로 전환 시킨다고 설명한다.
+
+진화한 육체를 넘어, 달리기가 인간의 몸과 뇌에 미치는 영향을 실험과 과학적 근거를 통해 풀어낸다. 
+몸이 아니라 뇌가 먼저 반응하는 운동. 달리기를 새롭게 이해하게 될 것이다.
+
+〈호모 러너스, 달리기 인간〉에서는 총 3부작으로 인간이 달리는 이유를 과학, 진화 등 다양한 시선으로 탐구한다. 
+진화적 관점에서 알아봤던 1부에 이어서, 2부에서는 달리기를 통해 몸과 뇌가 깨어나는 경이로운 변화를 과학적으로 추적한다.  
+
+#달리기 #러닝 #러너 #런닝 #마라톤 #달리기역사 #러닝크루 #달리기 진화 #호모 러너스 #달리기인간 #진화
+
+▶️ 프로그램 : 지식채널e - 호모 러너스 달리기 인간 2부, 달리면 어떻게 달라질까?
+▶️ 방송일자 : 2025.08.19.</div></div><div class="bookmark-href"><img src="https://www.youtube.com/s/desktop/14cba078/img/favicon_144x144.png" class="icon bookmark-icon"/>https://www.youtube.com/watch?v=qz5eTRM2U8Q</div></div><img src="https://i.ytimg.com/vi/qz5eTRM2U8Q/maxresdefault.jpg" class="bookmark-image"/></a></figure></div><div style="display:contents" dir="ltr"><figure id="36254d01-27a8-8046-9c90-e31ee0c13ea5"><a href="https://www.youtube.com/watch?v=R0JKCYZ8hng" class="bookmark source"><div class="bookmark-info"><div class="bookmark-text"><div class="bookmark-title">How playing an instrument benefits your brain - Anita Collins</div><div class="bookmark-description">Check out our Patreon page: https://www.patreon.com/teded
+
+View full lesson: http://ed.ted.com/lessons/how-playing-an-instrument-benefits-your-brain-anita-collins
+
+When you listen to music, multiple areas of your brain become engaged and active. But when you actually play an instrument, that activity becomes more like a full-body brain workout. What&#x27;s going on? Anita Collins explains the fireworks that go off in musicians&#x27; brains when they play, and examines some of the long-term positive effects of this mental workout. 
+
+Lesson by Anita Collins, animation by Sharon Colman Graham.</div></div><div class="bookmark-href"><img src="https://www.youtube.com/s/desktop/14cba078/img/favicon_144x144.png" class="icon bookmark-icon"/>https://www.youtube.com/watch?v=R0JKCYZ8hng</div></div><img src="https://i.ytimg.com/vi/R0JKCYZ8hng/maxresdefault.jpg" class="bookmark-image"/></a></figure></div><div style="display:contents" dir="auto"><hr id="36254d01-27a8-8091-bef0-e6075aeac32d"/></div><div style="display:contents" dir="auto"><p id="36254d01-27a8-80c4-86bc-e3f2e31b95d6" class="">
+</p></div></div></article><span class="sans" style="font-size:14px;padding-top:2em"></span></body></html>

@@ -75,6 +75,55 @@
         line-height: 1.8;
       }
 
+      .video-card {
+        display: grid;
+        grid-template-columns: 1.35fr 1fr;
+        gap: 0;
+        margin: 0 0 34px;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        overflow: hidden;
+        background: #fffdf8;
+        color: inherit;
+        text-decoration: none;
+      }
+
+      .video-card:hover {
+        border-color: #b9aa92;
+      }
+
+      .video-info {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        min-height: 190px;
+        padding: 20px;
+      }
+
+      .video-title {
+        margin: 0;
+        color: var(--text);
+        font-size: 1.05rem;
+        font-weight: 700;
+        line-height: 1.55;
+      }
+
+      .video-url {
+        margin-top: 20px;
+        color: var(--muted);
+        font-size: 0.88rem;
+        line-height: 1.4;
+        word-break: break-all;
+      }
+
+      .video-thumb {
+        width: 100%;
+        height: 100%;
+        min-height: 190px;
+        object-fit: cover;
+        background: #e9e2d5;
+      }
+
       @media (max-width: 560px) {
         main {
           width: min(100% - 28px, 760px);
@@ -84,6 +133,19 @@
         p {
           font-size: 1rem;
           line-height: 1.85;
+        }
+
+        .video-card {
+          grid-template-columns: 1fr;
+        }
+
+        .video-info {
+          min-height: auto;
+        }
+
+        .video-thumb {
+          min-height: auto;
+          aspect-ratio: 16 / 9;
         }
       }
     </style>
@@ -97,6 +159,14 @@
       <h1>자립</h1>
 
       <article>
+        <a class="video-card" href="https://www.youtube.com/watch?v=CFMXc5uZC6g">
+          <div class="video-info">
+            <p class="video-title">현재 80년대생이 가장 안타까운 부모인 이유ㅣ대외비 EP.15</p>
+            <span class="video-url">https://www.youtube.com/watch?v=CFMXc5uZC6g</span>
+          </div>
+          <img class="video-thumb" src="https://i.ytimg.com/vi/CFMXc5uZC6g/maxresdefault.jpg" alt="">
+        </a>
+
         <p>남에게 예속되거나 의지하지 아니하고 스스로 섬.</p>
 
         <p>성인이 되면 스스로 결정하고 스스로 돈을 벌고 스스로 살아가는. 자립을 해야 한다.</p>

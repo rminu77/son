@@ -1,0 +1,733 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>아들에게 — 아빠가 주고 싶은 말</title>
+<style>
+  :root{
+    --bg:#FAF6EF;
+    --paper:#FFFFFF;
+    --ink:#2B2A28;
+    --muted:#736E66;
+    --line:#E7E0D4;
+    --c1:#2E8B7A;   /* 외모  */
+    --c2:#C8702F;   /* 성격  */
+    --c3:#3F6CA8;   /* 기준  */
+    --c4:#7B5AA6;   /* 능력  */
+    --c5:#4A7C59;   /* 마무리 */
+    --serif:"AppleMyungjo","Nanum Myeongjo","Apple SD Gothic Neo",serif;
+    --sans:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Pretendard","Noto Sans KR","Malgun Gothic",system-ui,sans-serif;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0; background:var(--bg); color:var(--ink);
+    font-family:var(--sans); line-height:1.72; letter-spacing:-.01em;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:1080px; margin:0 auto; padding:32px 24px 96px;}
+
+  /* ---- top tab bar ---- */
+  .topbar{
+    display:flex; align-items:center; justify-content:space-between;
+    gap:12px; flex-wrap:wrap; margin-bottom:30px;
+  }
+  .tabs{display:flex; gap:6px; background:#efe8da; padding:5px; border-radius:999px;}
+  .tab{
+    font-family:var(--sans); font-size:.96rem; font-weight:600; color:var(--muted);
+    background:transparent; border:none; border-radius:999px;
+    padding:9px 22px; cursor:pointer; transition:.18s;
+  }
+  .tab.active{background:var(--paper); color:var(--ink); box-shadow:0 2px 8px rgba(60,50,30,.12);}
+  .print-btn{
+    font-family:var(--sans); font-size:.84rem; color:var(--muted);
+    background:var(--paper); border:1px solid var(--line); border-radius:999px;
+    padding:8px 16px; cursor:pointer; transition:.15s;
+  }
+  .print-btn:hover{color:var(--ink); border-color:#cfc7b8;}
+
+  .panel{display:none;}
+  .panel.active{display:block; animation:fade .25s ease;}
+  @keyframes fade{from{opacity:0; transform:translateY(4px);} to{opacity:1; transform:none;}}
+
+  .mini-bar{display:flex; gap:8px; justify-content:flex-end; flex-wrap:wrap; margin-bottom:20px;}
+  .mini-bar button{
+    font-family:var(--sans); font-size:.82rem; color:var(--muted);
+    background:var(--paper); border:1px solid var(--line); border-radius:999px;
+    padding:6px 14px; cursor:pointer; transition:.15s;
+  }
+  .mini-bar button:hover{color:var(--ink); border-color:#cfc7b8;}
+
+  /* ---- hero ---- */
+  .hero{text-align:center; padding:8px 8px 8px;}
+  .kicker{font-size:.82rem; letter-spacing:.22em; color:var(--muted); margin-bottom:22px;}
+  .hero h1{
+    font-family:var(--serif); font-weight:400;
+    font-size:clamp(1.55rem,3.6vw,2.45rem); line-height:1.45;
+    margin:0 0 8px; color:#211f1d; word-break:keep-all;
+  }
+  .hero .q{color:var(--muted); font-size:1rem; margin:0 0 26px; word-break:keep-all;}
+  .define{
+    font-family:var(--serif); font-size:clamp(1rem,2.2vw,1.18rem);
+    color:#37342f; margin:0 auto 4px; max-width:680px; word-break:keep-all;
+  }
+  .pillars{display:flex; gap:10px; justify-content:center; flex-wrap:wrap; margin:26px 0 6px;}
+  .pill{font-size:.92rem; font-weight:600; padding:8px 18px; border-radius:999px; color:#fff; box-shadow:0 2px 8px rgba(0,0,0,.07);}
+  .pill.p1{background:var(--c1);} .pill.p2{background:var(--c2);}
+  .pill.p3{background:var(--c3);} .pill.p4{background:var(--c4);}
+  .stem{width:2px; height:46px; background:var(--line); margin:14px auto 30px;}
+
+  /* ---- branch ---- */
+  .branch{
+    background:var(--paper); border:1px solid var(--line); border-radius:18px;
+    margin:0 0 20px; overflow:hidden; box-shadow:0 6px 22px rgba(60,50,30,.05);
+    border-left:6px solid var(--c);
+  }
+  .branch[data-k="1"]{--c:var(--c1);} .branch[data-k="2"]{--c:var(--c2);}
+  .branch[data-k="3"]{--c:var(--c3);} .branch[data-k="4"]{--c:var(--c4);}
+  .branch>summary{
+    list-style:none; cursor:pointer; user-select:none;
+    display:flex; align-items:baseline; gap:14px; padding:22px 26px; position:relative;
+  }
+  .branch>summary::-webkit-details-marker{display:none;}
+  .num{font-family:var(--serif); font-size:1.9rem; line-height:1; color:var(--c); opacity:.9; min-width:1.4em;}
+  .btitle{font-size:1.28rem; font-weight:700; color:#26241f;}
+  .bcap{font-size:.92rem; color:var(--muted); font-weight:500;}
+  .chev{margin-left:auto; align-self:center; color:var(--muted); font-size:.8rem; transition:transform .2s; flex:0 0 auto;}
+  .branch[open] .chev{transform:rotate(180deg);}
+  .body{padding:2px 26px 26px 26px;}
+  .node{margin:18px 0 0; padding:2px 0 2px 20px; border-left:2px solid var(--line);}
+  .node h4{margin:0 0 6px; font-size:1.04rem; color:var(--c); font-weight:700; display:flex; align-items:center; gap:8px;}
+  .node h4::before{content:""; width:9px; height:9px; border-radius:50%; background:var(--c); display:inline-block; margin-left:-25px;}
+  .hint{margin:0 0 8px; font-family:var(--serif); color:#5d5851; background:rgba(0,0,0,.025); border-radius:8px; padding:7px 12px; font-size:.96rem; display:inline-block; word-break:keep-all;}
+  ul.leaf{margin:6px 0 0; padding:0; list-style:none;}
+  ul.leaf li{position:relative; padding:5px 0 5px 18px; color:#3b3833; word-break:keep-all; font-size:.99rem;}
+  ul.leaf li::before{content:""; position:absolute; left:0; top:14px; width:7px; height:2px; background:var(--c); opacity:.55;}
+  ul.leaf li b{color:#1f1d1a;}
+  .warn{color:#b23b3b; font-weight:600;}
+
+  /* ---- closing ---- */
+  .closing{margin-top:40px; background:#F4F1E8; border:1px solid var(--line); border-left:6px solid var(--c5); border-radius:18px; padding:34px 32px;}
+  .closing .ct{font-family:var(--serif); font-size:1.18rem; color:var(--c5); margin:0 0 18px; font-weight:400;}
+  .closing ul{margin:0; padding:0; list-style:none;}
+  .closing li{position:relative; padding:9px 0 9px 22px; color:#34322d; word-break:keep-all; font-size:1.03rem;}
+  .closing li::before{content:""; position:absolute; left:0; top:17px; width:9px; height:9px; border-radius:50%; background:var(--c5); opacity:.5;}
+  .closing b{color:#23211d;}
+  .closing .big{font-family:var(--serif); font-size:1.16rem; color:#23211d; padding-left:0; margin-top:6px;}
+  .closing .big::before{display:none;}
+  .sign{text-align:right; margin-top:26px; font-family:var(--serif); color:var(--muted); font-size:1.02rem;}
+  .sign b{color:var(--c5);}
+
+  /* ---- sources tab ---- */
+  .src-intro{text-align:center; color:var(--muted); font-size:.98rem; margin:2px 0 34px; word-break:keep-all;}
+  .crit{margin-bottom:42px;}
+  .crit[data-k="1"]{--c:var(--c1);} .crit[data-k="2"]{--c:var(--c2);}
+  .crit[data-k="3"]{--c:var(--c3);} .crit[data-k="4"]{--c:var(--c4);}
+  .crit-h{display:flex; align-items:center; gap:12px; padding-bottom:10px; border-bottom:2px solid var(--c);}
+  .crit-h .cn{font-family:var(--serif); font-size:1.5rem; color:var(--c); line-height:1;}
+  .crit-h .ct{font-size:1.28rem; font-weight:800; color:#26241f;}
+  .crit-h .cc{font-size:.86rem; color:var(--muted); font-weight:500;}
+  .crit-h .cnt{margin-left:auto; font-size:.8rem; color:var(--c); font-weight:700; background:color-mix(in srgb,var(--c) 12%, white); padding:3px 12px; border-radius:999px;}
+  .vid{background:var(--paper); border:1px solid var(--line); border-left:5px solid var(--c); border-radius:14px; padding:17px 20px; margin-top:14px; box-shadow:0 4px 14px rgba(60,50,30,.04);}
+  .vcat{font-size:.76rem; font-weight:700; color:var(--c); letter-spacing:.03em; margin-bottom:5px;}
+  .vtitle{display:inline-block; font-size:1.06rem; font-weight:700; color:#23211d; text-decoration:none; line-height:1.45; word-break:keep-all;}
+  .vtitle:hover{color:var(--c); text-decoration:underline;}
+  .vtitle .ext{font-size:.78rem; color:var(--muted); font-weight:500;}
+  .vsum{color:#6a655d; font-size:.93rem; margin:7px 0 10px; word-break:keep-all;}
+  ul.vkey{margin:0; padding:0; list-style:none;}
+  ul.vkey li{position:relative; padding:4px 0 4px 18px; color:#3b3833; font-size:.95rem; word-break:keep-all;}
+  ul.vkey li::before{content:""; position:absolute; left:0; top:12px; width:7px; height:2px; background:var(--c); opacity:.55;}
+  ul.vkey li b{color:#1f1d1a;}
+  .vlink{display:inline-block; margin-top:10px; font-size:.82rem; color:var(--c); text-decoration:none; font-weight:600;}
+  .vlink:hover{text-decoration:underline;}
+  .empty{margin-top:14px; border:1.5px dashed var(--line); border-radius:14px; padding:24px; text-align:center; color:var(--muted); font-size:.95rem; word-break:keep-all;}
+  .empty b{color:#5d5851;}
+
+  footer{text-align:center; color:#a59e90; font-size:.8rem; margin-top:40px; word-break:keep-all;}
+
+  /* ---- checklist tab ---- */
+  .ck-head{text-align:center; padding:6px 8px 4px;}
+  .ck-head h2{font-family:var(--serif); font-weight:400; font-size:clamp(1.4rem,3vw,1.9rem); color:#211f1d; margin:0 0 12px;}
+  .ck-quote{font-family:var(--serif); color:#5d5851; font-size:1.04rem; max-width:640px; margin:0 auto; word-break:keep-all; line-height:1.6;}
+  .ck-quote b{color:#23211d;} .ck-quote .sg{color:var(--c5);}
+  .ck-tip{color:var(--muted); font-size:.9rem; margin:16px 0 0; word-break:keep-all;}
+  .ck-bar{display:flex; align-items:center; justify-content:space-between; gap:16px 24px; flex-wrap:wrap; margin:28px 0 16px;}
+  .ck-nav{display:flex; align-items:center; gap:6px;}
+  .ck-nav button{font-family:var(--sans); font-size:.85rem; color:var(--muted); background:var(--paper); border:1px solid var(--line); border-radius:999px; padding:7px 14px; cursor:pointer; transition:.15s;}
+  .ck-nav button:hover{color:var(--ink); border-color:#cfc7b8;}
+  .ck-week{font-weight:700; color:#26241f; font-size:1rem; min-width:138px; text-align:center;}
+  .ck-stats{display:flex; gap:20px; align-items:center; flex-wrap:wrap;}
+  .ck-streak{font-weight:800; color:var(--c2); font-size:1.02rem; white-space:nowrap;}
+  .ck-prog{display:flex; flex-direction:column; gap:5px; min-width:180px;}
+  .ck-prog .lab{font-size:.78rem; color:var(--muted); display:flex; justify-content:space-between; gap:10px;}
+  .ck-prog .lab b{color:var(--c5); font-weight:700;}
+  .ck-prog .track{height:8px; background:#ece5d8; border-radius:999px; overflow:hidden;}
+  .ck-prog .fill{height:100%; background:var(--c5); border-radius:999px; transition:width .3s;}
+  .ck-wrap{overflow-x:auto; background:var(--paper); border:1px solid var(--line); border-radius:16px; box-shadow:0 6px 22px rgba(60,50,30,.05); padding:8px 10px;}
+  table.ck{border-collapse:collapse; width:100%; min-width:540px;}
+  table.ck th, table.ck td{text-align:center; padding:0;}
+  table.ck thead th{padding:10px 2px 12px; font-size:.85rem; color:var(--muted); font-weight:600;}
+  table.ck thead th .dnum{display:block; font-size:.72rem; color:#a59e90; font-weight:500; margin-top:3px;}
+  table.ck thead th.today{color:var(--c5);} table.ck thead th.today .dnum{color:var(--c5); font-weight:700;}
+  th.rowlab{min-width:236px; width:236px;}
+  td.rowlab{text-align:left; padding:8px 10px 8px 14px; font-size:.9rem; line-height:1.4; color:#3b3833; border-left:4px solid var(--c); word-break:keep-all; vertical-align:middle;}
+  td.rowlab .em{margin-right:7px;}
+  tr.grp td{text-align:left; padding:16px 0 4px 8px; font-family:var(--serif); font-size:.95rem; color:var(--c); font-weight:700;}
+  td.cell{padding:5px 3px;}
+  td.cell.today{background:rgba(74,124,89,.07);}
+  .box{width:30px; height:30px; border:2px solid #d7cfc0; border-radius:8px; background:#fff; cursor:pointer; display:inline-flex; align-items:center; justify-content:center; font-size:1rem; line-height:1; color:#fff; padding:0; transition:.12s;}
+  .box:hover{border-color:var(--c);}
+  .box.on{background:var(--c); border-color:var(--c);}
+  .box.on::after{content:"✓";}
+  tr.note td.rowlab{border-left-color:#cdc6b8; color:var(--muted);}
+  .noteinput{width:90%; border:none; border-bottom:1.5px solid var(--line); background:transparent; font-family:var(--sans); font-size:.8rem; color:#3b3833; padding:4px 2px; text-align:center;}
+  .noteinput:focus{outline:none; border-bottom-color:var(--c5);}
+  .ck-actions{display:flex; gap:8px; justify-content:flex-end; margin-top:18px;}
+  .ck-actions button{font-family:var(--sans); font-size:.84rem; color:var(--muted); background:var(--paper); border:1px solid var(--line); border-radius:999px; padding:8px 16px; cursor:pointer; transition:.15s;}
+  .ck-actions button:hover{color:var(--ink); border-color:#cfc7b8;}
+
+  @media print{
+    body{background:#fff;}
+    .topbar, .mini-bar, .vlink, footer, .ck-nav button, .ck-stats, .ck-actions, .ck-tip{display:none !important;}
+    .panel:not(.active){display:none !important;}
+    .panel.active{display:block !important; animation:none !important; opacity:1 !important;}
+    .branch,.closing,.vid{box-shadow:none; break-inside:avoid;}
+    .ck-wrap{overflow:visible; box-shadow:none; border:none; padding:0;}
+    table.ck{min-width:0;}
+    .box,.box.on{-webkit-print-color-adjust:exact; print-color-adjust:exact;}
+    .wrap{padding:0;}
+  }
+  @media (max-width:560px){
+    .branch>summary{padding:18px;} .body{padding:0 18px 20px;}
+    .topbar{justify-content:center;}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="topbar">
+    <div class="tabs">
+      <button class="tab active" data-tab="map">마인드맵</button>
+      <button class="tab" data-tab="src">근거 자료</button>
+      <button class="tab" data-tab="check">하루 체크리스트</button>
+    </div>
+    <button class="print-btn" onclick="window.print()">인쇄 / PDF</button>
+  </div>
+
+  <!-- ============ TAB 1 : 마인드맵 ============ -->
+  <section class="panel active" id="panel-map">
+
+    <div class="mini-bar">
+      <button onclick="setAll(true)">모두 펼치기</button>
+      <button onclick="setAll(false)">모두 접기</button>
+    </div>
+
+    <header class="hero">
+      <div class="kicker">아 들 에 게 ,  아 빠 가</div>
+      <h1>너는 어떤 사람이<br>되고 싶을까?</h1>
+      <p class="q">‘좋은 사람’의 기준은 무엇일까 — 아빠가 한번 생각해 봤어.</p>
+      <p class="define">아마도 <b>능력 있고 · 외모 좋고 · 성격 좋고</b>,<br>그리고 <b>흔들리지 않는 나만의 기준</b>이 있는 사람.</p>
+      <div class="pillars">
+        <span class="pill p1">외모</span>
+        <span class="pill p2">성격</span>
+        <span class="pill p3">기준</span>
+        <span class="pill p4">능력</span>
+      </div>
+      <div class="define" style="margin-top:18px; color:var(--muted); font-family:var(--sans); font-size:.95rem;">이 네 가지를 하나씩 들여다보면 —</div>
+    </header>
+
+    <div class="stem"></div>
+
+    <!-- 1. 외모 -->
+    <details class="branch" data-k="1" open>
+      <summary><span class="num">01</span><span class="btitle">외모</span><span class="bcap">몸(신체) + 분위기(패션·냄새)</span><span class="chev">▼</span></summary>
+      <div class="body">
+        <div class="node">
+          <h4>몸 (신체) · 얼굴 · 키 · 몸매</h4>
+          <ul class="leaf">
+            <li><b>얼굴</b> — 세안만 잘해도 점점 좋아져. 그리고 <b>좋은 표정</b> 짓는 연습을 하자.<br><span style="color:var(--muted)">(무서운 표정은 사람들이 가까이 못 오게 만들거든.)</span></li>
+            <li><b>키</b> — 주사와 함께 <b>철봉·수영</b> 같은 운동을 하면 좋아져. 엄마가 노력하고 있지.</li>
+            <li><b>몸매</b> — 결국 <b>운동</b>이야. 철봉·수영은 어깨를 넓혀 줘. 무작정 굶기는 <span class="warn">✕</span> — 결국 요요가 와.</li>
+          </ul>
+        </div>
+        <div class="node">
+          <h4>분위기 · 냄새</h4>
+          <p class="hint">네 나이 때엔 “잘 씻기”만 해도 충분해.</p>
+          <ul class="leaf">
+            <li>냄새는 대부분 <b>세균</b>에서 나와 — 노폐물이 오래 쌓이면 세균도 쌓이지.</li>
+            <li>가급적 <b>자주</b>, <b>집에 오자마자</b>. 오래 씻기보다 <b>효과적으로</b>.</li>
+            <li><b>비누칠 충분히 → 잠깐 두고 → 물로 헹구기.</b> 동시에 헹구면 기름이 떨어질 시간이 없어 냄새가 남아.</li>
+          </ul>
+        </div>
+      </div>
+    </details>
+
+    <!-- 2. 성격 -->
+    <details class="branch" data-k="2" open>
+      <summary><span class="num">02</span><span class="btitle">성격</span><span class="bcap">호감 가는 태도 + 인성</span><span class="chev">▼</span></summary>
+      <div class="body">
+        <div class="node">
+          <h4>호감 가는 태도</h4>
+          <ul class="leaf">
+            <li>말할 때 <b>짜증 · 남 탓 · 뒷담화</b> <span class="warn">✕</span><br><span style="color:var(--muted)">(이런 사람과는 기분이 안 좋아져 멀어지게 돼.)</span></li>
+            <li><b>대화하면 기분이 좋아지는 사람</b>이 되자 — 긍정적이고, 인정해 주고, 따뜻하게, 공감하며.</li>
+          </ul>
+        </div>
+        <div class="node">
+          <h4>인성</h4>
+          <ul class="leaf">
+            <li><b>정직</b>하고 <b>겸손</b>하게. 특히 <b>정직</b> — 정직한 사람은 실수도 빨리 인정해.</li>
+            <li><b>감정 조절</b> — 화나거나 스트레스 받을 때도 <span class="warn">욕·충동적 행동·폭력 ✕</span>. 잠깐 멈추고 다스리는 법을 익히자.</li>
+            <li><span class="warn">⚠ 남 탓하고 실수를 인정하지 않는 말투</span>는 호감을 떨어뜨리는 <b>가장 심각한</b> 원인이야.</li>
+          </ul>
+        </div>
+      </div>
+    </details>
+
+    <!-- 3. 기준 -->
+    <details class="branch" data-k="3" open>
+      <summary><span class="num">03</span><span class="btitle">기준</span><span class="bcap">흔들리지 않는 나만의 기준</span><span class="chev">▼</span></summary>
+      <div class="body">
+        <div class="node">
+          <h4>왜 필요할까</h4>
+          <ul class="leaf">
+            <li>기준이 있는 사람은 <b>믿음직하고 든든해</b> 보여. 함부로 대하지 못하지 — <b>호구가 되지 않아.</b></li>
+          </ul>
+        </div>
+        <div class="node">
+          <h4>어떤 기준일까</h4>
+          <ul class="leaf">
+            <li>나만의 기준은 <b>과학적 · 논리적 · 도덕적</b>이어야 해.<br><span style="color:var(--muted)">(이게 없는 기준은 오히려 잘못된 어른을 만들어.)</span></li>
+            <li>“나는 이런 사람이야” = “이런 기준으로 움직인다”를 <b>주변 모두가 알게 된다</b>는 뜻이야.</li>
+            <li>무리에 휩쓸려 기준 없이 따라다니면, 결국 <b>생각 없는 호구</b>가 되고 <b>이용당해.</b></li>
+          </ul>
+        </div>
+      </div>
+    </details>
+
+    <!-- 4. 능력 -->
+    <details class="branch" data-k="4" open>
+      <summary><span class="num">04</span><span class="btitle">능력</span><span class="bcap">이 모든 걸 ‘유지’시키는 토대</span><span class="chev">▼</span></summary>
+      <div class="body">
+        <div class="node">
+          <h4>왜 토대일까</h4>
+          <p class="hint">이 모든 걸 다 갖춰도, 능력이 없으면 유지되지 않아.</p>
+          <ul class="leaf">
+            <li>우리가 사는 곳은 <b>자본주의</b> 세상이야. 경제적·전문적 능력이 없으면 외모도 성격도 기준도 흔들려.</li>
+            <li>가장 좋은 건 <b>내가 좋아하는 일 · 갖고 싶은 전문성</b>으로 돈을 벌고 경제력을 갖는 것.</li>
+          </ul>
+        </div>
+        <div class="node">
+          <h4>아빠의 응원</h4>
+          <ul class="leaf">
+            <li>네가 <b>항공우주공학</b>으로 진로를 정하려 했을 때 아빠는 너무 기뻤어.</li>
+            <li>꼭 네 꿈이 이루어지길 바랄게. 그리고 <b>노력하도록 도와줄게.</b></li>
+          </ul>
+        </div>
+      </div>
+    </details>
+
+    <!-- 마무리 -->
+    <section class="closing">
+      <p class="ct">🫶 아빠가 마지막으로</p>
+      <ul>
+        <li><b>나의 현재는 나의 책임</b>이야. 남의 책임이 아니야.</li>
+        <li><b>나의 미래도 나의 책임</b>이야 — 하루하루 변화하려고 계획하고 실행해서 얻는 거야.</li>
+        <li class="big">하루아침에 변하지 않아. 하루하루 차곡차곡 쌓인 게, 어느 날 뒤돌아보면 변화가 되어 있어 — <b>키가 크는 것처럼.</b></li>
+        <li>너는 아직 성인이 아니니까, 이 <b>네 가지</b>를 키울 <b>시간과 기회가 충분해.</b> 지금이 <b>가장 힘들지 않은, 가장 좋은 시기</b>야.</li>
+        <li>아빠는 너를 잘 키우고, <b>좋은 어른으로 자립하도록</b> 도울게. 너도 <b>계획하고 실행하는 노력</b>을 해 줬으면 좋겠어.</li>
+      </ul>
+      <div class="sign">— <b>아빠가</b></div>
+    </section>
+  </section>
+
+  <!-- ============ TAB 2 : 근거 자료 ============ -->
+  <section class="panel" id="panel-src">
+
+    <!-- 외모 -->
+    <div class="crit" data-k="1">
+      <div class="crit-h"><span class="cn">01</span><span class="ct">외모</span><span class="cc">몸 · 얼굴 · 키 · 냄새</span><span class="cnt">영상 6</span></div>
+
+      <article class="vid">
+        <div class="vcat">얼굴 · 피부</div>
+        <a class="vtitle" href="https://youtu.be/Xr81vIQR59A?si=FO6IXLIcBJFp-d0S&t=412" target="_blank" rel="noopener">피부에 헛돈 쓰지 마세요 — 세안할 때 ‘이것만’ 바꿨더니 <span class="ext">↗</span></a>
+        <p class="vsum">세안할 때 흔한 실수와, 피부에 덜 자극 주는 세안법.</p>
+        <ul class="vkey">
+          <li>세안은 피부 장벽을 지키는 <b>첫 단계</b> — 손 모양보다 <b>거품</b>이 중요</li>
+          <li>물 온도는 <b>미지근하게</b>, 하루 <b>2번</b> 정도가 적당</li>
+          <li>세안 후엔 <b>바로 보습</b>, 수건은 문지르지 말고 톡톡</li>
+        </ul>
+        <a class="vlink" href="https://youtu.be/Xr81vIQR59A?si=FO6IXLIcBJFp-d0S&t=412" target="_blank" rel="noopener">▶ 영상 보기</a>
+      </article>
+
+      <article class="vid">
+        <div class="vcat">사춘기 냄새 · 여드름</div>
+        <a class="vtitle" href="https://youtu.be/dpktG64_iaE?si=CUCz1Z8PabeR6lOM&t=417" target="_blank" rel="noopener">사춘기 냄새·여드름 관리법, 딱 이것만! (이광렬 교수) <span class="ext">↗</span></a>
+        <p class="vsum">사춘기엔 호르몬 때문에 냄새·여드름이 느는 게 자연스러워 — 그 관리법.</p>
+        <ul class="vkey">
+          <li>사춘기엔 호르몬이 요동쳐 <b>냄새·여드름이 느는 게 당연</b> (네 탓이 아니야)</li>
+          <li>약 먹기 전에 <b>생활습관</b> — 설탕·술·기름진/튀긴 음식 줄이기</li>
+          <li>빡빡 닦지 말고 <b>약산성 클렌징폼·바디워시</b> + 적당한 각질 관리</li>
+          <li>피부 장벽엔 <b>세라마이드 로션</b> (이 3가지만 챙겨도 충분)</li>
+        </ul>
+        <a class="vlink" href="https://youtu.be/dpktG64_iaE?si=CUCz1Z8PabeR6lOM&t=417" target="_blank" rel="noopener">▶ 영상 보기</a>
+      </article>
+
+      <article class="vid">
+        <div class="vcat">냄새 · 씻기</div>
+        <a class="vtitle" href="https://www.youtube.com/watch?v=guouHJdOwCM&t=81s" target="_blank" rel="noopener">세균 싹 지우는 손 세정제의 비밀 (화학자 장홍제) <span class="ext">↗</span></a>
+        <p class="vsum">비누와 손 세정제가 세균을 줄이는 원리.</p>
+        <ul class="vkey">
+          <li>비누는 세균을 <b>죽이는 게 아니라 ‘떼어내는 것’</b> → 충분히 비누칠한 뒤 헹궈야 효과</li>
+          <li>손은 <b>손끝 · 손톱 밑 · 손가락 사이</b>를 빠뜨리기 쉬워</li>
+          <li>비싸다고 좋은 게 아니다 — 용법대로 쓰는 게 핵심</li>
+        </ul>
+        <a class="vlink" href="https://www.youtube.com/watch?v=guouHJdOwCM&t=81s" target="_blank" rel="noopener">▶ 영상 보기</a>
+      </article>
+
+      <article class="vid">
+        <div class="vcat">키 · 자세</div>
+        <a class="vtitle" href="https://www.youtube.com/watch?v=y9dVixN4E10" target="_blank" rel="noopener">철봉 매달리기, 어떻게 해야 할까? <span class="ext">↗</span></a>
+        <p class="vsum">그냥 매달리는 것만으로도 척추 건강에 도움.</p>
+        <ul class="vkey">
+          <li>매달리기만 해도 <b>척추가 늘어나 자세 교정</b>에 도움</li>
+          <li>힘을 너무 주지 말고 — 시선·호흡·어깨 위치에 신경</li>
+          <li><b>처음엔 짧게</b> 시작해도 충분</li>
+        </ul>
+        <a class="vlink" href="https://www.youtube.com/watch?v=y9dVixN4E10" target="_blank" rel="noopener">▶ 영상 보기</a>
+      </article>
+
+      <article class="vid">
+        <div class="vcat">몸매 · 어깨</div>
+        <a class="vtitle" href="https://youtu.be/ZSisSHM0oLE?si=EJYYKYWjKSSA2Doz" target="_blank" rel="noopener">나도 할래 “턱걸이” — 추천 근력운동 <span class="ext">↗</span></a>
+        <p class="vsum">턱걸이로 가장 크고 강한 등근육(활배근) 키우기.</p>
+        <ul class="vkey">
+          <li>활배근을 키우면 <b>어깨가 넓어지고</b> 허리(디스크)도 보호돼</li>
+          <li>손등이 얼굴 쪽=풀업 / 손바닥 쪽=<b>친업</b>(어깨 부담 적음)</li>
+          <li>하나도 못 해도 <b>풀다운</b>부터 안전하게 시작</li>
+        </ul>
+        <a class="vlink" href="https://youtu.be/ZSisSHM0oLE?si=EJYYKYWjKSSA2Doz" target="_blank" rel="noopener">▶ 영상 보기</a>
+      </article>
+
+      <article class="vid">
+        <div class="vcat">몸매 · 식단</div>
+        <a class="vtitle" href="https://youtu.be/fDxLRogH9yI?si=-vMrbSh5uou9p5hN&t=576" target="_blank" rel="noopener">효율적으로 살 빼는 법은 따로 있어요 <span class="ext">↗</span></a>
+        <p class="vsum">굶기보다 ‘지속 가능한’ 식단이 핵심.</p>
+        <ul class="vkey">
+          <li>무조건 안 먹으면 <b>근육도 빠지고</b>, 몸이 비상으로 인식해 <b>요요</b>가 와</li>
+          <li>탄수화물·단백질·지방을 <b>골고루</b>, 아침은 가볍게라도 먹기</li>
+          <li>야식은 참기만 말고 <b>건강한 대안</b>(과일·요거트 등)을 미리 준비</li>
+        </ul>
+        <a class="vlink" href="https://youtu.be/fDxLRogH9yI?si=-vMrbSh5uou9p5hN&t=576" target="_blank" rel="noopener">▶ 영상 보기</a>
+      </article>
+    </div>
+
+    <!-- 성격 -->
+    <div class="crit" data-k="2">
+      <div class="crit-h"><span class="cn">02</span><span class="ct">성격</span><span class="cc">호감 가는 태도 · 인성</span><span class="cnt">영상 5</span></div>
+
+      <article class="vid">
+        <div class="vcat">말투 · 태도</div>
+        <a class="vtitle" href="https://www.youtube.com/watch?v=1G19MAGtPC4" target="_blank" rel="noopener">유독 사회성 떨어지는 사람들이 자주 쓰는 말투 <span class="ext">↗</span></a>
+        <p class="vsum">무심코 상대를 ‘부정’하는 말투가 상처가 된다.</p>
+        <ul class="vkey">
+          <li><b>말 끊기 · 건성으로 듣기</b>도 다 ‘부정’에 들어가</li>
+          <li>팩트보다 <b>상대가 느끼는 감정</b>이 먼저 (“살 쪘네” 같은 말 주의)</li>
+          <li>“그래, 근데…”(예스 but) 대신 <b>“멋진 꿈이네”처럼 감정까지 인정</b>(예스 이모션)</li>
+          <li>말하기 전 <b>2초 침묵</b>, 다툼은 “누가 맞냐”보다 <b>같은 목적</b> 찾기</li>
+        </ul>
+        <a class="vlink" href="https://www.youtube.com/watch?v=1G19MAGtPC4" target="_blank" rel="noopener">▶ 영상 보기</a>
+      </article>
+
+      <article class="vid">
+        <div class="vcat">호감 · 인성</div>
+        <a class="vtitle" href="https://youtu.be/LO12pbioPfk?si=4TJm8PuWIiw0nO_l&t=909" target="_blank" rel="noopener">호감 가는 사람이 되려면? 착한데 만만하지 않은 사람 (김경일) <span class="ext">↗</span></a>
+        <p class="vsum">평범해도 인기 많은 사람의 비결.</p>
+        <ul class="vkey">
+          <li>호감 = <b>우호적 감정</b> — 외모만이 아니라 따뜻함·공감</li>
+          <li>핵심은 눈치보다 <b>정직함 · 겸손 · 진정성</b></li>
+          <li><b>착한데 만만하지 않은 사람</b>은 자기 ‘정의(기준)’가 있어</li>
+          <li>인기 많은 사람은 <b>남을 인기 있게</b> 만들어 줘</li>
+        </ul>
+        <a class="vlink" href="https://youtu.be/LO12pbioPfk?si=4TJm8PuWIiw0nO_l&t=909" target="_blank" rel="noopener">▶ 영상 보기</a>
+      </article>
+
+      <article class="vid">
+        <div class="vcat">호감 · 매력</div>
+        <a class="vtitle" href="https://youtu.be/KwngyOXvWQ8?si=DaCoUOBwrwWoZG7J&t=472" target="_blank" rel="noopener">호감과 매력은 타고나는 걸까? 심리학이 말하는 진짜 호감의 법칙 <span class="ext">↗</span></a>
+        <p class="vsum">호감은 타고난 외모가 아니라 ‘만들어지는’ 감정.</p>
+        <ul class="vkey">
+          <li>호감의 핵심도 결국 <b>정직함 · 겸손 · 진정성</b></li>
+          <li><b>경청</b>과 태도가 매력을 만든다</li>
+          <li>외모는 얼굴만이 아니라 <b>소리·냄새·동작까지 총체적 인상</b></li>
+        </ul>
+        <a class="vlink" href="https://youtu.be/KwngyOXvWQ8?si=DaCoUOBwrwWoZG7J&t=472" target="_blank" rel="noopener">▶ 영상 보기</a>
+      </article>
+
+      <article class="vid">
+        <div class="vcat">다정 · 배려</div>
+        <a class="vtitle" href="https://www.youtube.com/watch?v=nkc8tVCxZKM" target="_blank" rel="noopener">다정은 체력이고 배려는 지능이라던데 — 필요한 다정 vs 피곤한 다정 <span class="ext">↗</span></a>
+        <p class="vsum">진짜 필요한 다정은 어떤 모습일까.</p>
+        <ul class="vkey">
+          <li>다정은 거창한 게 아니라 <b>상대 안색을 살피는 섬세함</b>, 성실한 한마디</li>
+          <li><b>“다정도 체력”</b> — 내 몸·마음에 여유가 있어야 남에게 다정할 수 있어</li>
+          <li>거절도 <b>말투·표정으로 따뜻하게</b> 전하면 돼 (내용보다 전달 방식)</li>
+        </ul>
+        <a class="vlink" href="https://www.youtube.com/watch?v=nkc8tVCxZKM" target="_blank" rel="noopener">▶ 영상 보기</a>
+      </article>
+
+      <article class="vid">
+        <div class="vcat">태도 · 인정</div>
+        <a class="vtitle" href="https://youtu.be/L4LU14jjDt0?si=zcZAnMy-KASnp0EZ&t=142" target="_blank" rel="noopener">천만 뷰 넘은 ‘인간관계’ 강연 (김창옥) <span class="ext">↗</span></a>
+        <p class="vsum">곁에 둬야 할 사람과 ‘인정’의 힘.</p>
+        <ul class="vkey">
+          <li>말의 <b>내용보다 ‘말하는 태도’</b>가 더 중요</li>
+          <li>꼭 곁에 둬야 할 사람은 <b>‘삶으로 말하는 사람’</b></li>
+          <li>사람을 살리는 건 조건부 칭찬이 아니라 <b>“딱 좋다”는 말(있는 그대로의 인정)</b></li>
+        </ul>
+        <a class="vlink" href="https://youtu.be/L4LU14jjDt0?si=zcZAnMy-KASnp0EZ&t=142" target="_blank" rel="noopener">▶ 영상 보기</a>
+      </article>
+    </div>
+
+    <!-- 기준 -->
+    <div class="crit" data-k="3">
+      <div class="crit-h"><span class="cn">03</span><span class="ct">기준</span><span class="cc">흔들리지 않는 나만의 기준 · 안정감</span><span class="cnt">영상 3</span></div>
+
+      <article class="vid">
+        <div class="vcat">안정감</div>
+        <a class="vtitle" href="https://youtu.be/rLrsqbMT8kU?si=5eUpSO1P-EzUhoN2&t=3047" target="_blank" rel="noopener">굳이 남에게 잘 보이려 하지 않고 무서울 정도로 안정된 특징 (김경일) <span class="ext">↗</span></a>
+        <p class="vsum">옷·표정·혼자 있는 시간·관계를 ‘안정되게’ 다루는 법.</p>
+        <ul class="vkey">
+          <li><b>옷은 주인공이 아니라 내면을 돋보이게</b> — 내면보다 앞서면 안 돼</li>
+          <li>첫인상에서 중요한 건 매력보다 <b>우호성</b></li>
+          <li>혼자 있는 시간을 <b>외로움이 아니라 ‘고독’</b>으로 바꾸기</li>
+          <li>사람은 여러 자아를 <b>상황에 맞게</b> 꺼내 쓰는 거야</li>
+        </ul>
+        <a class="vlink" href="https://youtu.be/rLrsqbMT8kU?si=5eUpSO1P-EzUhoN2&t=3047" target="_blank" rel="noopener">▶ 영상 보기</a>
+      </article>
+
+      <article class="vid">
+        <div class="vcat">자존감</div>
+        <a class="vtitle" href="https://www.youtube.com/watch?v=pzfPduCdGDA&t=906s" target="_blank" rel="noopener">‘자존감’ 높이는 방법 (#어쩌다어른) <span class="ext">↗</span></a>
+        <p class="vsum">자존감 = 자기효능감 + 자기조절감 + 자기안정감.</p>
+        <ul class="vkey">
+          <li><b>자기조절감</b> = 내 인생을 내가 원하는 대로 살고 있다는 느낌</li>
+          <li><b>자기안정감</b> = 안전하다고 느끼는 감각</li>
+          <li>10·20대는 자존감이 <b>흔들리기 쉬운 시기</b> — 그래서 지금부터 키워두는 게 중요</li>
+        </ul>
+        <a class="vlink" href="https://www.youtube.com/watch?v=pzfPduCdGDA&t=906s" target="_blank" rel="noopener">▶ 영상 보기</a>
+      </article>
+
+      <article class="vid">
+        <div class="vcat">마인드셋 · 감정관리</div>
+        <a class="vtitle" href="https://www.youtube.com/watch?v=LpvMnTLXBzs" target="_blank" rel="noopener">모든 인간관계 90%는 리셋된다 (이지영) <span class="ext">↗</span></a>
+        <p class="vsum">미움·상처를 붙잡지 말고, 내가 통제할 수 있는 것에 집중.</p>
+        <ul class="vkey">
+          <li><b>내가 통제할 수 있는 것 / 없는 것</b>을 분리해서 보기</li>
+          <li>모두에게 사랑받으려 말고 <b>나를 진짜 알아주는 사람</b>에게 집중</li>
+          <li>남을 미워하는 마음이 <b>결국 내 삶을 제일 무겁게</b> 만들어</li>
+        </ul>
+        <a class="vlink" href="https://www.youtube.com/watch?v=LpvMnTLXBzs" target="_blank" rel="noopener">▶ 영상 보기</a>
+      </article>
+    </div>
+
+    <!-- 능력 -->
+    <div class="crit" data-k="4">
+      <div class="crit-h"><span class="cn">04</span><span class="ct">능력</span><span class="cc">노력 · 실행 · 시간관리 · 성공 습관</span><span class="cnt">영상 5</span></div>
+
+      <article class="vid">
+        <div class="vcat">노력 · 연습</div>
+        <a class="vtitle" href="https://www.youtube.com/watch?v=mSGf6eMCW-s" target="_blank" rel="noopener">노력하지 않는 사람들의 특성 <span class="ext">↗</span></a>
+        <p class="vsum">떨림·불안은 성격이 아니라 ‘연습 부족’에서 온다.</p>
+        <ul class="vkey">
+          <li>익숙한 일은 안 떨리고, 안 해본 일은 떤다 — 결국 <b>연습이 답</b></li>
+          <li><b>연습이 실력을 만든다</b> (조수미·이승엽 같은 사례)</li>
+          <li>핑계 대신 <b>연습</b>을 하자</li>
+        </ul>
+        <a class="vlink" href="https://www.youtube.com/watch?v=mSGf6eMCW-s" target="_blank" rel="noopener">▶ 영상 보기</a>
+      </article>
+
+      <article class="vid">
+        <div class="vcat">시간 관리</div>
+        <a class="vtitle" href="https://www.youtube.com/watch?v=3GRt5XUKCPQ" target="_blank" rel="noopener">성공한 사람들의 시간 관리 비법 (이지영) <span class="ext">↗</span></a>
+        <p class="vsum">시간 관리는 자투리가 아니라 ‘우선순위’ 정하기.</p>
+        <ul class="vkey">
+          <li>어항에 <b>큰 돌(중요한 일)을 먼저</b> 넣어야 다 들어간다는 비유</li>
+          <li>자투리 시간 쥐어짜기보다 <b>무엇을 먼저 할지</b>가 핵심</li>
+        </ul>
+        <a class="vlink" href="https://www.youtube.com/watch?v=3GRt5XUKCPQ" target="_blank" rel="noopener">▶ 영상 보기</a>
+      </article>
+
+      <article class="vid">
+        <div class="vcat">성공 습관</div>
+        <a class="vtitle" href="https://www.youtube.com/watch?v=qXD9mH8I2Nc" target="_blank" rel="noopener">1년 후에 성공하고 싶다면 (정승제 동기부여) <span class="ext">↗</span></a>
+        <p class="vsum">사회에서 성공하는 사람들의 공통점.</p>
+        <ul class="vkey">
+          <li>‘열심히’보다 <b>그냥 계속 해내는 습관</b></li>
+          <li><b>생각하고 몰입하는 과정</b>이 차이를 만든다</li>
+        </ul>
+        <a class="vlink" href="https://www.youtube.com/watch?v=qXD9mH8I2Nc" target="_blank" rel="noopener">▶ 영상 보기</a>
+      </article>
+
+      <article class="vid">
+        <div class="vcat">동기부여</div>
+        <a class="vtitle" href="https://www.youtube.com/watch?v=TAVQ1tU4VP0" target="_blank" rel="noopener">1년 후에 성공하고 싶다면 (이지영 동기부여) <span class="ext">↗</span></a>
+        <p class="vsum">10년 후의 나에게 편지 쓰기.</p>
+        <ul class="vkey">
+          <li><b>스스로를 믿는 마음</b>과 후회 없이 <b>버티는 태도</b>가 결국 사람을 바꾼다</li>
+          <li>10년 후의 나를 그리며 오늘을 살기</li>
+        </ul>
+        <a class="vlink" href="https://www.youtube.com/watch?v=TAVQ1tU4VP0" target="_blank" rel="noopener">▶ 영상 보기</a>
+      </article>
+
+      <article class="vid">
+        <div class="vcat">자기긍정 · 실행</div>
+        <a class="vtitle" href="https://www.youtube.com/shorts/zOaOuHzMMpI" target="_blank" rel="noopener">사람은 이럴 때 자기 자신이 좋아진다 (이지영) <span class="ext">↗</span></a>
+        <p class="vsum">자기 자신을 좋아하게 되는 순간은 언제일까.</p>
+        <ul class="vkey">
+          <li>해야 할 일·계획·목표를 <b>실제로 해내는 순간</b>, 자기 자신을 더 좋아하게 된다</li>
+          <li>→ 아빠의 마지막 말 <b>“계획하고 실행하는 노력”</b>과 그대로 이어지는 메시지</li>
+        </ul>
+        <a class="vlink" href="https://www.youtube.com/shorts/zOaOuHzMMpI" target="_blank" rel="noopener">▶ 영상 보기</a>
+      </article>
+    </div>
+  </section>
+
+  <!-- ============ TAB 3 : 하루 체크리스트 ============ -->
+  <section class="panel" id="panel-check">
+    <div class="ck-head">
+      <h2>하루 체크리스트</h2>
+      <p class="ck-quote">하루아침에 변하지 않아. 이 칸들이 <b>차곡차곡</b> 쌓이는 게,<br>바로 네가 자라는 모습이야 — <span class="sg">키가 크는 것처럼.</span></p>
+      <p class="ck-tip">그냥 ‘했다’가 아니라, <b>이렇게 ‘제대로’ 했는지</b>를 떠올리며 체크해 봐. 솔직하게! 못 한 날이 있어도 괜찮아 — 내일 다시 쌓으면 되니까.</p>
+    </div>
+
+    <div class="ck-bar">
+      <div class="ck-nav">
+        <button id="ckPrev">◀ 지난 주</button>
+        <span class="ck-week" id="ckWeek"></span>
+        <button id="ckNext">다음 주 ▶</button>
+        <button id="ckToday">오늘로</button>
+      </div>
+      <div class="ck-stats">
+        <span class="ck-streak" id="ckStreak">🔥 연속 0일</span>
+        <div class="ck-prog">
+          <span class="lab" id="ckProgLab">이번 주 달성 <b>0 / 49 · 0%</b></span>
+          <div class="track"><div class="fill" id="ckFill" style="width:0%"></div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="ck-wrap"><div id="ckGrid"></div></div>
+
+    <div class="ck-actions">
+      <button onclick="window.print()">🖨 인쇄 / 빈 표 출력</button>
+    </div>
+
+    <footer>디지털로 체크하면 이 기기에 자동 저장돼요 · 종이로 쓰려면 ‘인쇄’ — 체크 안 한 빈 표가 깔끔하게 나와요</footer>
+  </section>
+
+</div>
+
+<script>
+  function setAll(open){
+    document.querySelectorAll('details.branch').forEach(function(d){ d.open = open; });
+  }
+  // 탭 전환
+  document.querySelectorAll('.tab').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      var t = btn.getAttribute('data-tab');
+      document.querySelectorAll('.tab').forEach(function(b){ b.classList.toggle('active', b===btn); });
+      document.querySelectorAll('.panel').forEach(function(p){ p.classList.toggle('active', p.id==='panel-'+t); });
+      window.scrollTo({top:0, behavior:'smooth'});
+    });
+  });
+  // 인쇄할 땐 마인드맵 가지를 모두 펼쳐서 출력
+  window.addEventListener('beforeprint', function(){ setAll(true); });
+
+  /* ===== 하루 체크리스트 ===== */
+  (function(){
+    var ITEMS=[
+      {grp:'① 외모', c:'var(--c1)'},
+      {id:'wash1', em:'🚿', label:'집에 오자마자(또는 자기 전) 씻기', c:'var(--c1)'},
+      {id:'wash2', em:'🧼', label:'비누칠 충분히 → 잠깐 두고 → 헹구고 보습', c:'var(--c1)'},
+      {id:'exercise', em:'💪', label:'운동했다 (철봉·턱걸이·수영 등)', c:'var(--c1)'},
+      {id:'eat', em:'🥗', label:'무작정 굶지 않고 골고루 먹기', c:'var(--c1)'},
+      {grp:'② 성격', c:'var(--c2)'},
+      {id:'words1', em:'🙂', label:'짜증·남탓·뒷담화 없이 말했다', c:'var(--c2)'},
+      {id:'words2', em:'💬', label:'인정·공감·따뜻한 말을 건넸다', c:'var(--c2)'},
+      {id:'honest', em:'🤝', label:'실수를 변명 없이 솔직히 인정했다 (겸손)', c:'var(--c2)'},
+      {id:'emotion', em:'🧘', label:'화나거나 스트레스 받아도 감정을 다스렸다 (욕·충동·폭력 ✕)', c:'var(--c2)'},
+      {grp:'③ 기준', c:'var(--c3)'},
+      {id:'std1', em:'🧭', label:'휩쓸리지 않고 ‘내 기준’대로 판단했다', c:'var(--c3)'},
+      {id:'std2', em:'⚖️', label:'도덕·과학·논리로 ‘나만의 기준’을 세웠다', c:'var(--c3)'},
+      {id:'std3', em:'🔎', label:'그 기준이 맞는지 직접 찾아보고 알아봤다', c:'var(--c3)'},
+      {grp:'④ 능력', c:'var(--c4)'},
+      {id:'plan', em:'🎯', label:'가장 중요한 일을 먼저 했다 (우선순위)', c:'var(--c4)'},
+      {id:'nodelay', em:'⏱️', label:'미루지 않고 했다 (핑계 대신 실행)', c:'var(--c4)'},
+      {id:'step', em:'📚', label:'꿈·공부에 한 걸음 (독서·공부·연습)', c:'var(--c4)'}
+    ];
+    var CHECK_IDS=ITEMS.filter(function(i){return i.id;}).map(function(i){return i.id;});
+    var DONE=Math.ceil(CHECK_IDS.length/2);  // 하루 '완료' 기준: 항목 절반 이상
+    var DOW=['월','화','수','목','금','토','일'];
+    var STORE='aiCheck_v2';
+    var weekOffset=0, state=load();
+
+    function load(){ try{return JSON.parse(localStorage.getItem(STORE))||{};}catch(e){return {};} }
+    function save(){ try{localStorage.setItem(STORE, JSON.stringify(state));}catch(e){} }
+    function pad(n){ return (n<10?'0':'')+n; }
+    function key(d){ return d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate()); }
+    function esc(s){ return String(s).replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+    function rec(k){ if(!state[k]) state[k]={items:{},note:''}; if(!state[k].items) state[k].items={}; return state[k]; }
+    function startMon(off){ var d=new Date(); d.setHours(0,0,0,0); var wd=(d.getDay()+6)%7; d.setDate(d.getDate()-wd+off*7); return d; }
+    function weekDays(off){ var m=startMon(off), a=[]; for(var i=0;i<7;i++){ var x=new Date(m); x.setDate(m.getDate()+i); a.push(x); } return a; }
+    function dayDone(k){ var r=state[k]; if(!r||!r.items) return false; var c=0; CHECK_IDS.forEach(function(id){ if(r.items[id]) c++; }); return c>=DONE; }
+    function streak(){ var d=new Date(); d.setHours(0,0,0,0); if(!dayDone(key(d))) d.setDate(d.getDate()-1); var n=0; while(dayDone(key(d))){ n++; d.setDate(d.getDate()-1); } return n; }
+
+    var grid=document.getElementById('ckGrid');
+
+    function stats(){
+      var days=weekDays(weekOffset), total=CHECK_IDS.length*7, done=0;
+      days.forEach(function(dd){ var r=state[key(dd)]; if(r&&r.items) CHECK_IDS.forEach(function(id){ if(r.items[id]) done++; }); });
+      var pct=total?Math.round(done/total*100):0;
+      document.getElementById('ckFill').style.width=pct+'%';
+      document.getElementById('ckProgLab').innerHTML='이번 주 달성 <b>'+done+' / '+total+' · '+pct+'%</b>';
+      document.getElementById('ckStreak').textContent='🔥 연속 '+streak()+'일';
+    }
+
+    function render(){
+      var days=weekDays(weekOffset), todayK=key(new Date());
+      var first=days[0], last=days[6];
+      document.getElementById('ckWeek').textContent=(first.getMonth()+1)+'/'+first.getDate()+' ~ '+(last.getMonth()+1)+'/'+last.getDate()+(weekOffset===0?' · 이번 주':'');
+      var h='<table class="ck"><thead><tr><th class="rowlab"></th>';
+      days.forEach(function(dd){ var t=key(dd)===todayK; h+='<th class="'+(t?'today':'')+'">'+DOW[(dd.getDay()+6)%7]+'<span class="dnum">'+dd.getDate()+'</span></th>'; });
+      h+='</tr></thead><tbody>';
+      ITEMS.forEach(function(it){
+        if(it.grp){ h+='<tr class="grp" style="--c:'+it.c+'"><td colspan="8">'+it.grp+'</td></tr>'; return; }
+        h+='<tr style="--c:'+it.c+'"><td class="rowlab"><span class="em">'+it.em+'</span>'+it.label+'</td>';
+        days.forEach(function(dd){ var k=key(dd), on=state[k]&&state[k].items&&state[k].items[it.id], t=k===todayK;
+          h+='<td class="cell '+(t?'today':'')+'"><button class="box'+(on?' on':'')+'" data-k="'+k+'" data-i="'+it.id+'" aria-label="'+it.label+'"></button></td>'; });
+        h+='</tr>';
+      });
+      h+='</tbody></table>';
+      grid.innerHTML=h;
+      stats();
+    }
+
+    grid.addEventListener('click', function(e){
+      var b=e.target.closest('.box'); if(!b) return;
+      var k=b.getAttribute('data-k'), id=b.getAttribute('data-i'), r=rec(k);
+      r.items[id]=!r.items[id]; save();
+      b.classList.toggle('on', !!r.items[id]);
+      stats();
+    });
+    document.getElementById('ckPrev').addEventListener('click', function(){ weekOffset--; render(); });
+    document.getElementById('ckNext').addEventListener('click', function(){ weekOffset++; render(); });
+    document.getElementById('ckToday').addEventListener('click', function(){ weekOffset=0; render(); });
+
+    render();
+  })();
+</script>
+</body>
+</html>

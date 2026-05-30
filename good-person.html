@@ -46,6 +46,8 @@
     padding:8px 16px; cursor:pointer; transition:.15s;
   }
   .print-btn:hover{color:var(--ink); border-color:#cfc7b8;}
+  .backlink{display:inline-block; margin-bottom:14px; color:var(--muted); text-decoration:none; font-size:.9rem; font-family:var(--sans);}
+  .backlink:hover{color:var(--ink);}
 
   .panel{display:none;}
   .panel.active{display:block; animation:fade .25s ease;}
@@ -189,7 +191,7 @@
 
   @media print{
     body{background:#fff;}
-    .topbar, .mini-bar, .vlink, footer, .ck-nav button, .ck-stats, .ck-actions, .ck-tip{display:none !important;}
+    .topbar, .backlink, .mini-bar, .vlink, footer, .ck-nav button, .ck-stats, .ck-actions, .ck-tip{display:none !important;}
     .panel:not(.active){display:none !important;}
     .panel.active{display:block !important; animation:none !important; opacity:1 !important;}
     .branch,.closing,.vid{box-shadow:none; break-inside:avoid;}
@@ -206,6 +208,8 @@
 </head>
 <body>
 <div class="wrap">
+
+  <a class="backlink" href="./">← 글 목록</a>
 
   <div class="topbar">
     <div class="tabs">

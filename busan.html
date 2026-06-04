@@ -3,7 +3,8 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>부산 가족여행 3박4일 · 카카오맵 동선</title>
+<title>부산 가족여행 3박4일 · 동선 & 맛집</title>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
 <style>
   :root{
     --d1:#2563eb; --d2:#16a34a; --d3:#ea580c; --d4:#9333ea; --hotel:#e11d48;
@@ -15,70 +16,90 @@
   header h1{margin:0;font-size:20px;letter-spacing:-.4px;}
   header p{margin:6px 0 0;font-size:13px;opacity:.85;}
   .wrap{max-width:1100px;margin:0 auto;padding:0 14px 60px;}
-  .filters{display:flex;flex-wrap:wrap;gap:8px;padding:14px 0;}
+  /* tabs */
+  .tabs{display:flex;gap:8px;padding:16px 0 4px;position:sticky;top:0;background:var(--bg);z-index:500;}
+  .tab{flex:0 0 auto;border:1px solid var(--line);background:#fff;border-radius:999px;padding:9px 18px;font-size:14px;font-weight:700;cursor:pointer;color:var(--muted);transition:.15s;}
+  .tab.active{background:#0f172a;color:#fff;border-color:transparent;}
+  .tabpane{display:none;}
+  .tabpane.active{display:block;}
+  /* filters */
+  .filters{display:flex;flex-wrap:wrap;gap:8px;padding:12px 0;}
   .chip{border:1px solid var(--line);background:#fff;border-radius:999px;padding:7px 14px;font-size:13px;font-weight:600;cursor:pointer;transition:.15s;color:var(--muted);}
-  .chip:hover{transform:translateY(-1px);}
   .chip.active{color:#fff;border-color:transparent;}
   .chip[data-day="all"].active{background:#0f172a;}
   .chip[data-day="1"].active{background:var(--d1);}
   .chip[data-day="2"].active{background:var(--d2);}
   .chip[data-day="3"].active{background:var(--d3);}
   .chip[data-day="4"].active{background:var(--d4);}
-  #map{width:100%;height:62vh;min-height:420px;border-radius:16px;box-shadow:0 6px 24px rgba(15,23,42,.12);overflow:hidden;}
-  .maperr{display:flex;align-items:center;justify-content:center;height:100%;padding:30px;text-align:center;font-size:13px;color:var(--muted);line-height:1.7;background:#f1f5f9;}
-  .note{font-size:12px;color:var(--muted);margin:10px 2px 0;line-height:1.6;}
-  .hint{font-size:12px;color:#92400e;background:#fef3c7;border:1px solid #fde68a;border-radius:10px;padding:10px 12px;margin:10px 0 0;line-height:1.6;}
-  /* kakao markers */
-  .kpin{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;border:2px solid #fff;box-shadow:0 2px 6px rgba(0,0,0,.4);color:#fff;font-weight:800;font-size:13px;cursor:pointer;}
-  .kpin.hotel{width:34px;height:34px;font-size:17px;}
-  /* kakao popup */
-  .kpop{position:relative;width:240px;background:#fff;border-radius:12px;box-shadow:0 8px 24px rgba(15,23,42,.28);padding:12px 14px;border:1px solid var(--line);}
-  .kpop::after{content:'';position:absolute;left:50%;bottom:-9px;transform:translateX(-50%);border:9px solid transparent;border-top-color:#fff;}
-  .kpop-x{position:absolute;top:7px;right:9px;border:none;background:none;font-size:18px;line-height:1;color:#9ca3af;cursor:pointer;}
-  .pop-day{font-size:11px;font-weight:800;letter-spacing:.3px;padding-right:16px;}
+  #map{width:100%;height:60vh;min-height:400px;border-radius:16px;box-shadow:0 6px 24px rgba(15,23,42,.12);}
+  /* markers + popup */
+  .pin{width:28px;height:28px;border-radius:50% 50% 50% 0;transform:rotate(-45deg);box-shadow:0 2px 6px rgba(0,0,0,.35);display:flex;align-items:center;justify-content:center;border:2px solid #fff;}
+  .pin span{transform:rotate(45deg);color:#fff;font-weight:800;font-size:13px;line-height:1;}
+  .pin.hotel{width:34px;height:34px;border-radius:50%;transform:none;}
+  .pin.hotel span{transform:none;font-size:17px;}
+  .leaflet-popup-content{margin:12px 14px;}
+  .pop-day{font-size:11px;font-weight:800;letter-spacing:.3px;}
   .pop-name{font-size:15px;font-weight:800;margin:2px 0 4px;}
   .pop-addr{font-size:12px;color:var(--muted);margin-bottom:6px;}
   .pop-row{font-size:12.5px;margin:3px 0;line-height:1.5;}
-  .pop-links{display:flex;gap:6px;margin-top:9px;flex-wrap:wrap;}
-  .pop-links a{font-size:12px;font-weight:700;text-decoration:none;padding:5px 9px;border-radius:7px;background:#f1f5f9;color:#0f172a;border:1px solid var(--line);}
-  .pop-links a:hover{background:#e2e8f0;}
-  /* itinerary */
-  h2.sec{font-size:16px;margin:34px 2px 12px;}
-  .day-block{margin-bottom:18px;}
-  .day-head{display:flex;align-items:center;gap:8px;font-weight:800;font-size:14px;margin-bottom:8px;}
+  .pop-links,.food-links{display:flex;gap:6px;margin-top:9px;flex-wrap:wrap;}
+  .pop-links a,.food-links a{font-size:12px;font-weight:700;text-decoration:none;padding:5px 9px;border-radius:7px;background:#f1f5f9;color:#0f172a;border:1px solid var(--line);}
+  .pop-links a:hover,.food-links a:hover{background:#e2e8f0;}
+  /* itinerary + food cards */
+  h2.sec{font-size:16px;margin:30px 2px 10px;}
+  .day-block,.area-block{margin-bottom:18px;}
+  .day-head,.area-head{display:flex;align-items:center;gap:8px;font-weight:800;font-size:14px;margin-bottom:3px;}
   .day-dot{width:12px;height:12px;border-radius:50%;}
-  .cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:10px;}
+  .area-hint{font-size:12px;color:var(--muted);margin:0 0 9px 20px;}
+  .cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:10px;}
   .card{background:#fff;border:1px solid var(--line);border-left-width:4px;border-radius:12px;padding:11px 13px;cursor:pointer;transition:.15s;}
   .card:hover{transform:translateY(-2px);box-shadow:0 6px 16px rgba(15,23,42,.1);}
   .card .seq{font-size:11px;font-weight:800;color:var(--muted);}
   .card .nm{font-size:14px;font-weight:800;margin:2px 0 4px;}
   .card .mt{font-size:12px;color:var(--muted);line-height:1.5;}
-  footer{font-size:11.5px;color:var(--muted);margin-top:30px;line-height:1.7;border-top:1px solid var(--line);padding-top:14px;}
+  /* food */
+  .food-card{background:#fff;border:1px solid var(--line);border-radius:12px;padding:12px 14px;}
+  .food-top{display:flex;align-items:baseline;justify-content:space-between;gap:8px;}
+  .food-name{font-size:15px;font-weight:800;}
+  .food-cat{flex:0 0 auto;font-size:11px;font-weight:700;color:#b45309;background:#fef3c7;border-radius:999px;padding:3px 9px;}
+  .food-addr{font-size:12px;color:var(--muted);margin:5px 0 0;line-height:1.5;}
+  .food-intro{font-size:12.5px;color:var(--muted);background:#fff;border:1px solid var(--line);border-radius:10px;padding:11px 13px;margin:12px 0 18px;line-height:1.7;}
 </style>
 </head>
 <body>
 <header>
-  <h1>🗺️ 부산 가족여행 3박4일 · 카카오맵 동선</h1>
+  <h1>🗺️ 부산 가족여행 3박4일</h1>
   <p>2026.7.19(일)~7.22(수) · 부부+14세 아들 · 택시 이동 · 숙소: 그랜드 조선 부산</p>
 </header>
 
 <div class="wrap">
-  <div class="filters" id="filters">
-    <button class="chip active" data-day="all">전체</button>
-    <button class="chip" data-day="1">Day 1 · 7/19</button>
-    <button class="chip" data-day="2">Day 2 · 7/20</button>
-    <button class="chip" data-day="3">Day 3 · 7/21</button>
-    <button class="chip" data-day="4">Day 4 · 7/22</button>
-  </div>
+  <nav class="tabs">
+    <button class="tab active" data-tab="map">🗺️ 동선 지도</button>
+    <button class="tab" data-tab="food">🍽️ 맛집</button>
+  </nav>
 
-  <div id="map"><div class="maperr">지도를 불러오는 중…</div></div>
+  <!-- ============ 지도 탭 ============ -->
+  <section id="tab-map" class="tabpane active">
+    <div class="filters" id="filters">
+      <button class="chip active" data-day="all">전체</button>
+      <button class="chip" data-day="1">Day 1 · 7/19</button>
+      <button class="chip" data-day="2">Day 2 · 7/20</button>
+      <button class="chip" data-day="3">Day 3 · 7/21</button>
+      <button class="chip" data-day="4">Day 4 · 7/22</button>
+    </div>
+    <div id="map"></div>
+    <h2 class="sec">📋 날짜별 일정</h2>
+    <div id="itinerary"></div>
+  </section>
 
-  <h2 class="sec">📋 날짜별 일정</h2>
-  <div id="itinerary"></div>
-
+  <!-- ============ 맛집 탭 ============ -->
+  <section id="tab-food" class="tabpane">
+    <div class="food-intro">📍 핀/버튼을 누르면 <b>네이버지도·카카오맵</b>으로 바로 연결됩니다. 위치별로 묶었어요 — 일정과 겹치는 동선에서 골라 드세요.</div>
+    <div id="foodlist"></div>
+  </section>
 </div>
 
-<script src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=69bf1427ead55f419e9b644ef7ee1b88&autoload=false"></script>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script>
 const DAYS = {
   0:{label:'숙소(베이스캠프)',color:'#e11d48'},
@@ -94,18 +115,17 @@ const C = {
   busan:[35.1152,129.0424]
 };
 const PLACES = [
-  {day:0,seq:'🏨',hotel:true,name:'그랜드 조선 부산',pos:C.hotel,addr:'해운대구 해운대해변로 292',
-   cost:'오션뷰 1박 30만~45만(예상)',tip:'체크인 15:00/아웃 11:00 · 6층 오션뷰 인피니티풀 · 3인 객실(엑스트라베드) 확인'},
+  {day:0,seq:'🏨',hotel:true,name:'그랜드 조선 부산',pos:C.hotel,addr:'해운대구 해운대해변로 292',cost:'오션뷰 1박 30만~45만(예상)',tip:'체크인 15:00/아웃 11:00 · 6층 오션뷰 인피니티풀'},
   {day:1,seq:1,name:'해운대 해수욕장',pos:C.beach,addr:'해운대구 중동2로 11',time:'15:30~',cost:'무료',tip:'도착 첫날 가볍게 산책/물놀이'},
-  {day:1,seq:2,name:'부산 엑스더스카이',pos:C.xsky,addr:'해운대구 달맞이길 30',time:'18:30',cost:'27,000원(온라인 ~23,200)',tip:'일몰 30분 전 입장 → 노을+야경 · 100층 스타벅스 · 유리바닥'},
+  {day:1,seq:2,name:'부산 엑스더스카이',pos:C.xsky,addr:'해운대구 달맞이길 30',time:'18:30',cost:'27,000원(온라인 ~23,200)',tip:'일몰 30분 전 입장 → 노을+야경 · 100층 스타벅스'},
   {day:2,seq:1,name:'해운대 해변(물놀이)',pos:C.beach,addr:'해운대구',time:'09:00',cost:'무료(파라솔 1만)',tip:'개장 직후가 가장 한산'},
   {day:2,seq:2,name:'블루라인파크(미포정거장)',pos:C.mipo,addr:'해운대구 청사포로 116',time:'12:30',cost:'스카이캡슐 3인승 편도 45,000',tip:'미포→청사포 캡슐 → 해변열차 복귀 · 사전예약 필수'},
   {day:2,seq:3,name:'더베이101',pos:C.bay,addr:'해운대구 동백로 52',time:'18:30',cost:'야경 무료 / 야간요트 34,000~',tip:'일몰·야경 · 야간 요트투어(광안대교 불꽃)'},
   {day:3,seq:1,name:'오륙도 스카이워크',pos:C.oryukdo,addr:'남구 오륙도로 137',time:'09:30',cost:'무료',tip:'오전 추천 · 투명유리, 덧신 착용 · 이기대 해안산책로'},
-  {day:3,seq:2,name:'광안리 해수욕장',pos:C.gwangalli,addr:'수영구 광안해변로',time:'오후~저녁',cost:'무료',tip:'해변·카페·광안대교 야경 (드론쇼는 토요일만이라 제외)'},
-  {day:4,seq:1,name:'송도 해상케이블카',pos:C.songdo,addr:'서구 송도해변로 171',time:'11:30',cost:'크리스탈 왕복 24,000',tip:'투명바닥 크리스탈크루즈 · 송도구름산책로·용궁구름다리'},
+  {day:3,seq:2,name:'광안리 해수욕장',pos:C.gwangalli,addr:'수영구 광안해변로',time:'오후~저녁',cost:'무료',tip:'해변·카페·광안대교 야경'},
+  {day:4,seq:1,name:'송도 해상케이블카',pos:C.songdo,addr:'서구 송도해변로 171',time:'11:30',cost:'크리스탈 왕복 24,000',tip:'투명바닥 크리스탈크루즈 · 송도구름산책로'},
   {day:4,seq:2,name:'자갈치·남포동(점심)',pos:C.nampo,addr:'중구 남포동',time:'13:30',cost:'-',tip:'송도와 가까움 · 점심'},
-  {day:4,seq:3,station:true,name:'KTX 부산역',pos:C.busan,addr:'동구 중앙대로 206',time:'출발',cost:'-',tip:'짐 라커 보관 추천 · 송도·남포동과 가까워 동선 효율'},
+  {day:4,seq:3,station:true,name:'KTX 부산역',pos:C.busan,addr:'동구 중앙대로 206',time:'출발',cost:'-',tip:'짐 라커 보관 추천'},
 ];
 const ROUTES = {
   1:[C.hotel,C.beach,C.xsky,C.hotel],
@@ -114,147 +134,151 @@ const ROUTES = {
   4:[C.hotel,C.songdo,C.nampo,C.busan],
 };
 
-function popupHTML(p){
-  const q = encodeURIComponent(p.name);
+const RESTAURANTS = [
+  {area:'🏖 해운대권 (우동·중동·좌동)', hint:'숙소 도보·택시권 — Day 1~3 아무 때나', items:[
+    {name:'엄용백 돼지구이집', cat:'돼지구이', addr:'해운대구 우동 635-6 1층'},
+    {name:'금수복국 해운대본점', cat:'복어요리', addr:'해운대구 중동 1394-65'},
+    {name:'석옥갈비', cat:'돼지고기구이', addr:'해운대구 중동 1256-7 1층'},
+    {name:'극동돼지국밥', cat:'돼지국밥', addr:'해운대구 중동 948-7 1층'},
+    {name:'거대갈비', cat:'소고기구이', addr:'해운대구 중동 1139-4'},
+    {name:'개미집 국제시장본점', cat:'낙지요리', addr:'해운대구 우동 1338'},
+    {name:'해운대 가야밀면', cat:'밀면·국수', addr:'해운대구 좌동 1352-1'},
+  ]},
+  {area:'🌊 광안·수영권', hint:'Day 3 광안리 근처', items:[
+    {name:'무쇠김치삼겹 광안점', cat:'돼지고기구이', addr:'수영구 광안동 202-7 1층'},
+    {name:'새벽집', cat:'국밥', addr:'수영구 민락동 176-32'},
+  ]},
+  {area:'🚋 기장권 (송정·장안)', hint:'Day 2 블루라인파크(송정) 근처', items:[
+    {name:'송정돌판낙지볶음', cat:'낙지요리', addr:'기장군 기장읍 시랑리 722'},
+    {name:'해운대국제갈비', cat:'고기요리', addr:'기장군 장안읍 좌천리 40-1'},
+  ]},
+  {area:'🏙 중구·원도심 (남포동)', hint:'Day 4 송도·남포동 근처', items:[
+    {name:'이재모피자 본점', cat:'피자', addr:'중구 신창동1가 2-1'},
+  ]},
+];
+
+function links(name){
+  const q = encodeURIComponent(name);
   const nv = `https://map.naver.com/p/search/${q}`;
   const kk = `https://map.kakao.com/?q=${q}`;
   const rt = `https://map.kakao.com/?sName=${encodeURIComponent('그랜드조선부산')}&eName=${q}`;
+  return {nv, kk, rt};
+}
+
+function popupHTML(p){
+  const L = links(p.name);
   const dlabel = p.day===0 ? '숙소' : DAYS[p.day].label;
-  const num = (p.hotel||p.station) ? '' : `<span style="color:${DAYS[p.day].color}">${p.seq}.</span> `;
-  return `<button class="kpop-x" aria-label="닫기">×</button>
+  return `<div class="pop">
     <div class="pop-day" style="color:${DAYS[p.day].color}">${dlabel}${p.time?' · '+p.time:''}</div>
-    <div class="pop-name">${num}${p.name}</div>
+    <div class="pop-name">${(p.hotel||p.station)?'':'<span style="color:'+DAYS[p.day].color+'">'+p.seq+'.</span> '}${p.name}</div>
     ${p.addr?`<div class="pop-addr">📍 ${p.addr}</div>`:''}
     ${p.cost&&p.cost!=='-'?`<div class="pop-row">💰 ${p.cost}</div>`:''}
     ${p.tip?`<div class="pop-row">💡 ${p.tip}</div>`:''}
     <div class="pop-links">
-      <a href="${nv}" target="_blank" rel="noopener">네이버지도</a>
-      <a href="${kk}" target="_blank" rel="noopener">카카오맵</a>
-      ${p.hotel?'':`<a href="${rt}" target="_blank" rel="noopener">길찾기 🚕</a>`}
-    </div>`;
+      <a href="${L.nv}" target="_blank" rel="noopener">네이버지도</a>
+      <a href="${L.kk}" target="_blank" rel="noopener">카카오맵</a>
+      ${p.hotel?'':`<a href="${L.rt}" target="_blank" rel="noopener">길찾기 🚕</a>`}
+    </div></div>`;
+}
+function makeIcon(p){
+  const color = DAYS[p.day].color;
+  if(p.hotel) return L.divIcon({className:'',html:`<div class="pin hotel" style="background:${color}"><span>🏨</span></div>`,iconSize:[34,34],iconAnchor:[17,17],popupAnchor:[0,-18]});
+  const label = p.station ? '🚄' : p.seq;
+  return L.divIcon({className:'',html:`<div class="pin" style="background:${color}"><span>${label}</span></div>`,iconSize:[28,28],iconAnchor:[14,28],popupAnchor:[0,-28]});
 }
 
-function boot(){
-  if(!window.kakao || !window.kakao.maps){
-    document.getElementById('map').innerHTML =
-      '<div class="maperr">카카오맵 SDK를 불러오지 못했습니다.<br/>JavaScript 키와 도메인 등록(플랫폼 &gt; Web)을 확인해 주세요.<br/>인터넷 연결도 확인하세요.</div>';
-    return;
-  }
-  kakao.maps.load(initMap);
-}
+const map = L.map('map',{scrollWheelZoom:true});
+L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png',{maxZoom:19,attribution:'© OpenStreetMap © CARTO'}).addTo(map);
 
-function initMap(){
-  const map = new kakao.maps.Map(document.getElementById('map'), {
-    center: new kakao.maps.LatLng(35.12, 129.09), level: 9
+const markersByDay = {0:[],1:[],2:[],3:[],4:[]};
+const markerIndex = [];
+PLACES.forEach(p=>{
+  const m = L.marker(p.pos,{icon:makeIcon(p)}).bindPopup(popupHTML(p));
+  markersByDay[p.day].push(m);
+  markerIndex.push(m);
+});
+const routeLayers = {};
+Object.keys(ROUTES).forEach(d=>{
+  routeLayers[d] = L.polyline(ROUTES[d],{color:DAYS[d].color,weight:4,opacity:.65,dashArray:'1,9',lineCap:'round'});
+});
+function render(sel){
+  Object.keys(markersByDay).forEach(d=>{
+    const dn=Number(d), show = sel==='all'||dn===sel||dn===0;
+    markersByDay[d].forEach(m=> show ? m.addTo(map) : map.removeLayer(m));
   });
-  map.addControl(new kakao.maps.ZoomControl(), kakao.maps.ControlPosition.RIGHT);
-
-  const ll = (pt)=> new kakao.maps.LatLng(pt[0], pt[1]);
-  const pinsByDay = {0:[],1:[],2:[],3:[],4:[]};
-  const infos = [];
-  const pinList = [];
-  let openInfo = null;
-
-  function closeInfo(){ if(openInfo){ openInfo.setMap(null); openInfo=null; } }
-  function openPopup(i){
-    closeInfo();
-    infos[i].setMap(map);
-    openInfo = infos[i];
-  }
-
-  PLACES.forEach((p, i)=>{
-    // pin
-    const pinEl = document.createElement('div');
-    pinEl.className = 'kpin' + (p.hotel?' hotel':'');
-    pinEl.style.background = DAYS[p.day].color;
-    pinEl.textContent = p.hotel ? '🏨' : (p.station ? '🚄' : p.seq);
-    pinEl.addEventListener('click', (e)=>{ e.stopPropagation(); openPopup(i); });
-    const pin = new kakao.maps.CustomOverlay({ position: ll(p.pos), content: pinEl, xAnchor:0.5, yAnchor:0.5, zIndex:3, clickable:true });
-    pinsByDay[p.day].push(pin);
-    pinList.push(pin);
-
-    // info popup
-    const popEl = document.createElement('div');
-    popEl.className = 'kpop';
-    popEl.innerHTML = popupHTML(p);
-    popEl.querySelector('.kpop-x').addEventListener('click', (e)=>{ e.stopPropagation(); closeInfo(); });
-    const info = new kakao.maps.CustomOverlay({ position: ll(p.pos), content: popEl, xAnchor:0.5, yAnchor:1.18, zIndex:6, clickable:true });
-    infos.push(info);
-  });
-
-  const routeLines = {};
-  Object.keys(ROUTES).forEach(d=>{
-    routeLines[d] = new kakao.maps.Polyline({
-      path: ROUTES[d].map(ll), strokeWeight:4, strokeColor:DAYS[d].color, strokeOpacity:0.7, strokeStyle:'shortdash'
-    });
-  });
-
-  kakao.maps.event.addListener(map, 'click', closeInfo);
-
-  function boundsFor(points){
-    const b = new kakao.maps.LatLngBounds();
-    points.forEach(pt=> b.extend(ll(pt)));
-    return b;
-  }
-  const allBounds = boundsFor(PLACES.map(p=>p.pos));
-
-  function render(sel){
-    closeInfo();
-    Object.keys(pinsByDay).forEach(d=>{
-      const dn=Number(d);
-      const show = sel==='all' || dn===sel || dn===0;
-      pinsByDay[d].forEach(pin=> pin.setMap(show ? map : null));
-    });
-    Object.keys(routeLines).forEach(d=>{
-      const dn=Number(d);
-      const show = sel==='all' || dn===sel;
-      routeLines[d].setMap(show ? map : null);
-    });
-    if(sel==='all') map.setBounds(allBounds);
-    else map.setBounds(boundsFor(PLACES.filter(p=>p.day===sel||p.day===0).map(p=>p.pos)));
-  }
-
-  render('all');
-
-  document.querySelectorAll('.chip').forEach(btn=>{
-    btn.addEventListener('click', ()=>{
-      document.querySelectorAll('.chip').forEach(b=>b.classList.remove('active'));
-      btn.classList.add('active');
-      const v = btn.dataset.day;
-      render(v==='all' ? 'all' : Number(v));
-    });
-  });
-
-  // itinerary cards
-  const itin = document.getElementById('itinerary');
-  [1,2,3,4].forEach(d=>{
-    const block = document.createElement('div');
-    block.className='day-block';
-    block.innerHTML = `<div class="day-head"><span class="day-dot" style="background:${DAYS[d].color}"></span>${DAYS[d].label}</div>`;
-    const cards = document.createElement('div');
-    cards.className='cards';
-    PLACES.forEach((p,idx)=>{
-      if(p.day!==d) return;
-      const card = document.createElement('div');
-      card.className='card';
-      card.style.borderLeftColor = DAYS[d].color;
-      card.innerHTML = `<div class="seq">${p.time||''}</div>
-        <div class="nm">${p.station?'🚄 ':''}${typeof p.seq==='number'?p.seq+'. ':''}${p.name}</div>
-        <div class="mt">${p.cost&&p.cost!=='-'?'💰 '+p.cost+'<br/>':''}${p.tip||''}</div>`;
-      card.addEventListener('click', ()=>{
-        map.setLevel(4);
-        map.panTo(ll(p.pos));
-        openPopup(idx);
-        window.scrollTo({top:0, behavior:'smooth'});
-      });
-      cards.appendChild(card);
-    });
-    block.appendChild(cards);
-    itin.appendChild(block);
+  Object.keys(routeLayers).forEach(d=>{
+    const dn=Number(d), show = sel==='all'||dn===sel;
+    show ? routeLayers[d].addTo(map) : map.removeLayer(routeLayers[d]);
   });
 }
+const allBounds = L.latLngBounds(PLACES.map(p=>p.pos));
+map.fitBounds(allBounds,{padding:[40,40]});
+render('all');
 
-boot();
+document.querySelectorAll('.chip').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    document.querySelectorAll('.chip').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    const v=btn.dataset.day, sel=v==='all'?'all':Number(v);
+    render(sel);
+    if(sel==='all') map.fitBounds(allBounds,{padding:[40,40]});
+    else map.fitBounds(L.latLngBounds(PLACES.filter(p=>p.day===sel||p.day===0).map(p=>p.pos)),{padding:[50,50]});
+  });
+});
+
+// itinerary
+const itin = document.getElementById('itinerary');
+[1,2,3,4].forEach(d=>{
+  const block=document.createElement('div'); block.className='day-block';
+  block.innerHTML=`<div class="day-head"><span class="day-dot" style="background:${DAYS[d].color}"></span>${DAYS[d].label}</div>`;
+  const cards=document.createElement('div'); cards.className='cards';
+  PLACES.forEach((p,idx)=>{
+    if(p.day!==d) return;
+    const card=document.createElement('div'); card.className='card'; card.style.borderLeftColor=DAYS[d].color;
+    card.innerHTML=`<div class="seq">${p.time||''}</div>
+      <div class="nm">${p.station?'🚄 ':''}${typeof p.seq==='number'?p.seq+'. ':''}${p.name}</div>
+      <div class="mt">${p.cost&&p.cost!=='-'?'💰 '+p.cost+'<br/>':''}${p.tip||''}</div>`;
+    card.addEventListener('click',()=>{
+      document.querySelector('.tab[data-tab="map"]').click();
+      map.setView(p.pos,15,{animate:true}); markerIndex[idx].openPopup();
+      window.scrollTo({top:0,behavior:'smooth'});
+    });
+    cards.appendChild(card);
+  });
+  block.appendChild(cards); itin.appendChild(block);
+});
+
+// food list
+const foodEl = document.getElementById('foodlist');
+RESTAURANTS.forEach(group=>{
+  const block=document.createElement('div'); block.className='area-block';
+  block.innerHTML=`<div class="area-head">${group.area}</div><div class="area-hint">${group.hint}</div>`;
+  const cards=document.createElement('div'); cards.className='cards';
+  group.items.forEach(r=>{
+    const L2=links(r.name);
+    const card=document.createElement('div'); card.className='food-card';
+    card.innerHTML=`<div class="food-top"><span class="food-name">${r.name}</span><span class="food-cat">${r.cat}</span></div>
+      <div class="food-addr">📍 ${r.addr}</div>
+      <div class="food-links">
+        <a href="${L2.nv}" target="_blank" rel="noopener">네이버지도</a>
+        <a href="${L2.kk}" target="_blank" rel="noopener">카카오맵</a>
+        <a href="${L2.rt}" target="_blank" rel="noopener">길찾기 🚕</a>
+      </div>`;
+    cards.appendChild(card);
+  });
+  block.appendChild(cards); foodEl.appendChild(block);
+});
+
+// tab switching
+document.querySelectorAll('.tab').forEach(tab=>{
+  tab.addEventListener('click',()=>{
+    document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+    document.querySelectorAll('.tabpane').forEach(p=>p.classList.remove('active'));
+    tab.classList.add('active');
+    document.getElementById('tab-'+tab.dataset.tab).classList.add('active');
+    if(tab.dataset.tab==='map') setTimeout(()=>map.invalidateSize(),50);
+  });
+});
 </script>
 </body>
 </html>

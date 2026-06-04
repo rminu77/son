@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>부산 가족여행 3박4일 · 동선 & 맛집</title>
+<title>부산 가족여행 3박4일 · 동선 · 관광지 · 맛집</title>
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
 <style>
   :root{
@@ -17,7 +17,7 @@
   header p{margin:6px 0 0;font-size:13px;opacity:.85;}
   .wrap{max-width:1100px;margin:0 auto;padding:0 14px 60px;}
   /* tabs */
-  .tabs{display:flex;gap:8px;padding:16px 0 4px;position:sticky;top:0;background:var(--bg);z-index:500;}
+  .tabs{display:flex;gap:8px;padding:16px 0 4px;position:sticky;top:0;background:var(--bg);z-index:500;flex-wrap:wrap;}
   .tab{flex:0 0 auto;border:1px solid var(--line);background:#fff;border-radius:999px;padding:9px 18px;font-size:14px;font-weight:700;cursor:pointer;color:var(--muted);transition:.15s;}
   .tab.active{background:#0f172a;color:#fff;border-color:transparent;}
   .tabpane{display:none;}
@@ -45,7 +45,7 @@
   .pop-links,.food-links{display:flex;gap:6px;margin-top:9px;flex-wrap:wrap;}
   .pop-links a,.food-links a{font-size:12px;font-weight:700;text-decoration:none;padding:5px 9px;border-radius:7px;background:#f1f5f9;color:#0f172a;border:1px solid var(--line);}
   .pop-links a:hover,.food-links a:hover{background:#e2e8f0;}
-  /* itinerary + food cards */
+  /* itinerary + cards */
   h2.sec{font-size:16px;margin:30px 2px 10px;}
   .day-block,.area-block{margin-bottom:18px;}
   .day-head,.area-head{display:flex;align-items:center;gap:8px;font-weight:800;font-size:14px;margin-bottom:3px;}
@@ -64,6 +64,17 @@
   .food-cat{flex:0 0 auto;font-size:11px;font-weight:700;color:#b45309;background:#fef3c7;border-radius:999px;padding:3px 9px;}
   .food-addr{font-size:12px;color:var(--muted);margin:5px 0 0;line-height:1.5;}
   .food-intro{font-size:12.5px;color:var(--muted);background:#fff;border:1px solid var(--line);border-radius:10px;padding:11px 13px;margin:12px 0 18px;line-height:1.7;}
+  /* spots */
+  .cards.spot-cards{grid-template-columns:repeat(auto-fill,minmax(300px,1fr));}
+  .spot-card{background:#fff;border:1px solid var(--line);border-top:3px solid var(--line);border-radius:12px;padding:13px 15px;}
+  .spot-top{display:flex;align-items:baseline;justify-content:space-between;gap:8px;}
+  .spot-name{font-size:15px;font-weight:800;}
+  .spot-rating{flex:0 0 auto;font-size:12px;font-weight:800;color:#b45309;}
+  .spot-cat{font-size:12px;color:var(--muted);margin:2px 0 9px;}
+  .spot-rows{display:flex;flex-direction:column;gap:5px;}
+  .spot-row{display:flex;gap:8px;font-size:12.5px;line-height:1.5;}
+  .spot-row .k{flex:0 0 52px;color:var(--muted);font-weight:700;}
+  .spot-row .v{flex:1;}
 </style>
 </head>
 <body>
@@ -75,6 +86,7 @@
 <div class="wrap">
   <nav class="tabs">
     <button class="tab active" data-tab="map">🗺️ 동선 지도</button>
+    <button class="tab" data-tab="spot">🏛️ 관광지</button>
     <button class="tab" data-tab="food">🍽️ 맛집</button>
   </nav>
 
@@ -90,6 +102,12 @@
     <div id="map"></div>
     <h2 class="sec">📋 날짜별 일정</h2>
     <div id="itinerary"></div>
+  </section>
+
+  <!-- ============ 관광지 탭 ============ -->
+  <section id="tab-spot" class="tabpane">
+    <div class="food-intro">🏛️ 일정에 들어간 관광지 7곳의 운영시간·요금·추천 시간대·예약·팁을 정리했어요. 요금/일정은 2026년 7월 기준 조사값이라 방문 직전 재확인을 권합니다.</div>
+    <div id="spotlist"></div>
   </section>
 
   <!-- ============ 맛집 탭 ============ -->
@@ -134,6 +152,45 @@ const ROUTES = {
   4:[C.hotel,C.songdo,C.nampo,C.busan],
 };
 
+const SPOTS = [
+  {day:1, items:[
+    {name:'해운대 해수욕장', cat:'해변 · 부산 대표 명소', rating:'',
+     hours:'입욕 09:00~18:00 (안전요원 근무)', price:'무료 (파라솔·튜브 1만 / 샤워 1천)',
+     best:'이른 오전 물놀이(한산) · 저녁 야경 산책', booking:'불필요',
+     tip:'동쪽 미포=일출 명소, 서쪽 동백섬=해안 산책로', addr:'해운대구 중동2로 11'},
+    {name:'부산 엑스더스카이', cat:'전망대 · 엘시티 100층(411m)', rating:'★ 4.6',
+     hours:'10:00~21:00 (입장마감 20:30) · 연중무휴', price:'대인 27,000 / 소인·경로 24,000 (온라인 ~23,200)',
+     best:'일몰 30분~1시간 전 입장 → 노을+야경', booking:'온라인 예매 권장(할인+대기↓)',
+     tip:'100층 스타벅스(세계 최고층)·유리바닥 · 2시간 무료주차', addr:'해운대구 달맞이길 30'},
+  ]},
+  {day:2, items:[
+    {name:'해운대 블루라인파크', cat:'해변열차 · 스카이캡슐', rating:'★ 4.7',
+     hours:'7~8월: 해변열차 09:00~21:30 / 스카이캡슐 08:30~20:30', price:'스카이캡슐 편도 2인4만·3인4.5만·4인5만 / 해변열차 8,000~10,000',
+     best:'미포→청사포 캡슐, 복귀는 해변열차 · 일몰 인기(경쟁↑)', booking:'★스카이캡슐 사전예약 필수(4주 전 화 07:00 오픈)',
+     tip:'갈 때 캡슐·올 때 열차 추천 · 주차 혼잡', addr:'해운대구 청사포로 116 (미포정거장)'},
+    {name:'더베이101', cat:'야경 명소 · 요트투어', rating:'★ 4.4',
+     hours:'야경 상시(무료) / 요트투어 11:00~22:00 (약 50분)', price:'야경·포토존 무료 / 야간 요트 34,000~ (선셋 39,000~)',
+     best:'일몰~야경, 마린시티·광안대교 · 야간 요트=불꽃', booking:'요트투어 사전예약',
+     tip:'요트 안 타도 야경 무료 · 피쉬앤칩스+맥주 · 매장이용시 주차권', addr:'해운대구 동백로 52'},
+  ]},
+  {day:3, items:[
+    {name:'오륙도 스카이워크', cat:'해안 절벽 스카이워크', rating:'★ 4.5 (무료 대비 만족↑)',
+     hours:'09:00~18:00 (6~9월 ~19:00) · 우천·강풍시 통제', price:'무료 (주차 1일 최대 8,000)',
+     best:'오전(빛·주차 유리) · 체류 약 20분', booking:'불필요',
+     tip:'덧신 착용 · 이기대 해안산책로와 묶기 · 동해/남해 경계', addr:'남구 오륙도로 137'},
+    {name:'광안리 해수욕장 (+드론쇼)', cat:'해변 · 광안대교 야경', rating:'★ 대표 야경',
+     hours:'해변 상시 / 드론쇼=매주 토 20:00·22:00 (약 12분)', price:'무료',
+     best:'광안대교 야경 · 해변 카페거리', booking:'불필요',
+     tip:'⚠️ 드론쇼는 토요일만 → 이번 일정(일~수)엔 정규공연 없음, 야경만', addr:'수영구 광안해변로'},
+  ]},
+  {day:4, items:[
+    {name:'송도 해상케이블카', cat:'해상 케이블카 (국내 최장)', rating:'★ 4.6+',
+     hours:'09:00~21:00 (7~8월 ~22:00) · 매표 마감 30분 전', price:'왕복 일반 19,000 / 크리스탈(투명바닥) 24,000',
+     best:'일몰·야경 인기 · 대낮 바다빛도 좋음', booking:'성수기·주말 온라인 권장',
+     tip:'크리스탈캐빈 투명바닥 · 송도구름산책로·용궁구름다리 · 주말 2시간 무료주차', addr:'서구 송도해변로 171 (송도베이스테이션)'},
+  ]},
+];
+
 const RESTAURANTS = [
   {area:'🏖 해운대권 (우동·중동·좌동)', hint:'숙소 도보·택시권 — Day 1~3 아무 때나', items:[
     {name:'엄용백 돼지구이집', cat:'돼지구이', addr:'해운대구 우동 635-6 1층'},
@@ -159,10 +216,11 @@ const RESTAURANTS = [
 
 function links(name){
   const q = encodeURIComponent(name);
-  const nv = `https://map.naver.com/p/search/${q}`;
-  const kk = `https://map.kakao.com/?q=${q}`;
-  const rt = `https://map.kakao.com/?sName=${encodeURIComponent('그랜드조선부산')}&eName=${q}`;
-  return {nv, kk, rt};
+  return {
+    nv:`https://map.naver.com/p/search/${q}`,
+    kk:`https://map.kakao.com/?q=${q}`,
+    rt:`https://map.kakao.com/?sName=${encodeURIComponent('그랜드조선부산')}&eName=${q}`
+  };
 }
 
 function popupHTML(p){
@@ -246,6 +304,36 @@ const itin = document.getElementById('itinerary');
     cards.appendChild(card);
   });
   block.appendChild(cards); itin.appendChild(block);
+});
+
+// spots (관광지)
+const spotEl = document.getElementById('spotlist');
+SPOTS.forEach(g=>{
+  const block=document.createElement('div'); block.className='area-block';
+  block.innerHTML=`<div class="day-head"><span class="day-dot" style="background:${DAYS[g.day].color}"></span>${DAYS[g.day].label}</div>`;
+  const cards=document.createElement('div'); cards.className='cards spot-cards';
+  g.items.forEach(s=>{
+    const L3=links(s.name);
+    const row=(k,v)=> v?`<div class="spot-row"><span class="k">${k}</span><span class="v">${v}</span></div>`:'';
+    const card=document.createElement('div'); card.className='spot-card'; card.style.borderTopColor=DAYS[g.day].color;
+    card.innerHTML=`<div class="spot-top"><span class="spot-name">${s.name}</span>${s.rating?`<span class="spot-rating">${s.rating}</span>`:''}</div>
+      <div class="spot-cat">${s.cat}</div>
+      <div class="spot-rows">
+        ${row('🕐 운영',s.hours)}
+        ${row('💰 요금',s.price)}
+        ${row('⭐ 추천',s.best)}
+        ${row('🎟 예약',s.booking)}
+        ${row('💡 팁',s.tip)}
+        ${row('📍 주소',s.addr)}
+      </div>
+      <div class="food-links">
+        <a href="${L3.nv}" target="_blank" rel="noopener">네이버지도</a>
+        <a href="${L3.kk}" target="_blank" rel="noopener">카카오맵</a>
+        <a href="${L3.rt}" target="_blank" rel="noopener">길찾기 🚕</a>
+      </div>`;
+    cards.appendChild(card);
+  });
+  block.appendChild(cards); spotEl.appendChild(block);
 });
 
 // food list

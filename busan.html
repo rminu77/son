@@ -75,7 +75,6 @@
 <body>
 <header>
   <h1>🗺️ 부산 가족여행 3박4일</h1>
-  <p>2026.7.19(일)~7.22(수) · 부부+14세 아들 · 택시 이동 · 숙소: 그랜드 조선 부산</p>
 </header>
 
 <div class="wrap">
@@ -126,6 +125,7 @@ const C = {
 };
 const PLACES = [
   {day:0,seq:'🏨',hotel:true,name:'그랜드 조선 부산',pos:C.hotel,addr:'해운대구 해운대해변로 292',cost:'오션뷰 1박 30만~45만(예상)',tip:'체크인 15:00/아웃 11:00 · 6층 오션뷰 인피니티풀'},
+  {day:1,seq:'',station:true,name:'SRT 부산역 (도착)',pos:C.busan,addr:'동구 중앙대로 206',time:'오후 도착',cost:'-',tip:'택시로 해운대 호텔 이동 (약 30~40분)'},
   {day:1,seq:1,name:'해운대 해수욕장',pos:C.beach,addr:'해운대구 중동2로 11',time:'15:30~',cost:'무료',tip:'도착 첫날 가볍게 산책/물놀이'},
   {day:1,seq:2,name:'부산 엑스더스카이',pos:C.xsky,addr:'해운대구 달맞이길 30',time:'18:30',cost:'27,000원(온라인 ~23,200)',tip:'일몰 30분 전 입장 → 노을+야경 · 100층 스타벅스'},
   {day:2,seq:1,name:'해운대 해변(물놀이)',pos:C.beach,addr:'해운대구',time:'09:00',cost:'무료(파라솔 1만)',tip:'개장 직후가 가장 한산'},
@@ -135,10 +135,10 @@ const PLACES = [
   {day:3,seq:2,name:'광안리 해수욕장',pos:C.gwangalli,addr:'수영구 광안해변로',time:'오후~저녁',cost:'무료',tip:'해변·카페·광안대교 야경'},
   {day:4,seq:1,name:'송도 해상케이블카',pos:C.songdo,addr:'서구 송도해변로 171',time:'11:30',cost:'크리스탈 왕복 24,000',tip:'투명바닥 크리스탈크루즈 · 송도구름산책로'},
   {day:4,seq:2,name:'자갈치·남포동(점심)',pos:C.nampo,addr:'중구 남포동',time:'13:30',cost:'-',tip:'송도와 가까움 · 점심'},
-  {day:4,seq:3,station:true,name:'SRT 부산역',pos:C.busan,addr:'동구 중앙대로 206',time:'출발',cost:'-',tip:'짐 라커 보관 추천'},
+  {day:4,seq:3,station:true,name:'SRT 부산역 (출발)',pos:C.busan,addr:'동구 중앙대로 206',time:'출발',cost:'-',tip:'짐 라커 보관 추천'},
 ];
 const ROUTES = {
-  1:[C.hotel,C.beach,C.xsky,C.hotel],
+  1:[C.busan,C.hotel,C.beach,C.xsky,C.hotel],
   2:[C.hotel,C.beach,C.mipo,C.bay,C.hotel],
   3:[C.hotel,C.oryukdo,C.gwangalli,C.hotel],
   4:[C.hotel,C.songdo,C.nampo,C.busan],

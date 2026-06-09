@@ -134,19 +134,20 @@ const PLACES = [
   {day:1,seq:'',station:true,name:'SRT 부산역 (도착)',pos:C.busan,addr:'동구 중앙대로 206',time:'오후 도착',cost:'-',tip:'택시로 해운대 호텔 이동 (약 30~40분)'},
   {day:1,seq:1,name:'해운대 해수욕장',pos:C.beach,addr:'해운대구 중동2로 11',time:'15:30~',cost:'무료',tip:'도착 첫날 가볍게 산책/물놀이'},
   {day:1,seq:2,name:'부산 엑스더스카이',pos:C.xsky,addr:'해운대구 달맞이길 30',time:'18:30',cost:'27,000원(온라인 ~23,200)',tip:'일몰 30분 전 입장 → 노을+야경 · 100층 스타벅스'},
-  {day:2,seq:1,name:'해운대 해변(물놀이)',pos:C.beach,addr:'해운대구',time:'09:00',cost:'무료(파라솔 1만)',tip:'개장 직후가 가장 한산'},
-  {day:2,seq:2,name:'블루라인파크(미포정거장)',pos:C.mipo,addr:'해운대구 청사포로 116',time:'12:30',cost:'스카이캡슐 3인승 편도 45,000',tip:'미포→청사포 캡슐 → 해변열차 복귀 · 사전예약 필수'},
-  {day:2,seq:3,name:'더베이101',pos:C.bay,addr:'해운대구 동백로 52',time:'18:30',cost:'야경 무료 / 야간요트 34,000~',tip:'일몰·야경 · 야간 요트투어(광안대교 불꽃)'},
+  {day:2,seq:1,name:'해운대 해변/호텔 수영장',pos:C.beach,addr:'해운대구',time:'09:00',cost:'무료(파라솔 1만)',tip:'오전 물놀이 후 점심·호텔 휴식'},
+  {day:2,seq:2,name:'블루라인파크(미포정거장)',pos:C.mipo,addr:'해운대구 청사포로 116',time:'16:00~18:30',cost:'스카이캡슐 3인승 편도 45,000',tip:'미포→청사포 캡슐 → 해변열차 복귀 · 늦은 오후 바다빛 · 사전예약 필수'},
   {day:3,seq:1,name:'오륙도 스카이워크',pos:C.oryukdo,addr:'남구 오륙도로 137',time:'09:30',cost:'무료',tip:'오전 추천 · 투명유리, 덧신 착용 · 이기대 해안산책로'},
-  {day:3,seq:2,name:'광안리 해수욕장',pos:C.gwangalli,addr:'수영구 광안해변로',time:'오후~저녁',cost:'무료',tip:'해변·카페·광안대교 야경'},
+  {day:3,seq:2,name:'해운대 해변/호텔 수영장',pos:C.beach,addr:'해운대구',time:'14:00',cost:'무료(파라솔 1만)',tip:'오륙도 후 해운대로 돌아와 오후 물놀이·휴식'},
+  {day:3,seq:3,name:'광안리 해수욕장',pos:C.gwangalli,addr:'수영구 광안해변로',time:'19:00',cost:'무료',tip:'저녁 식사 후 광안대교 야경 · 드론쇼는 토요일만이라 제외'},
+  {day:3,seq:4,name:'더베이101',pos:C.bay,addr:'해운대구 동백로 52',time:'20:30',cost:'야경 무료 / 야간요트 34,000~',tip:'광안리 야경 후 해운대 복귀 동선에서 마린시티 야경 · 요트는 사전예약'},
   {day:4,seq:1,name:'송도 해상케이블카',pos:C.songdo,addr:'서구 송도해변로 171',time:'11:30',cost:'크리스탈 왕복 24,000',tip:'투명바닥 크리스탈크루즈 · 송도구름산책로'},
   {day:4,seq:2,name:'자갈치·남포동(점심)',pos:C.nampo,addr:'중구 남포동',time:'13:30',cost:'-',tip:'송도와 가까움 · 점심'},
   {day:4,seq:3,station:true,name:'SRT 부산역 (출발)',pos:C.busan,addr:'동구 중앙대로 206',time:'출발',cost:'-',tip:'짐 라커 보관 추천'},
 ];
 const ROUTES = {
   1:[C.busan,C.hotel,C.beach,C.xsky,C.hotel],
-  2:[C.hotel,C.beach,C.mipo,C.bay,C.hotel],
-  3:[C.hotel,C.oryukdo,C.gwangalli,C.hotel],
+  2:[C.hotel,C.beach,C.mipo,C.hotel],
+  3:[C.hotel,C.oryukdo,C.beach,C.gwangalli,C.bay,C.hotel],
   4:[C.hotel,C.songdo,C.nampo,C.busan],
 };
 const SPOTS = [
@@ -165,10 +166,6 @@ const SPOTS = [
      hours:'7~8월: 해변열차 09:00~21:30 / 스카이캡슐 08:30~20:30', price:'스카이캡슐 편도 2인4만·3인4.5만·4인5만 / 해변열차 8,000~10,000',
      best:'미포→청사포 캡슐, 복귀는 해변열차 · 일몰 인기(경쟁↑)', booking:'★스카이캡슐 사전예약 필수(4주 전 화 07:00 오픈)',
      tip:'갈 때 캡슐·올 때 열차 추천 · 주차 혼잡', addr:'해운대구 청사포로 116 (미포정거장)'},
-    {name:'더베이101', cat:'야경 명소 · 요트투어', rating:'★ 4.4',
-     hours:'야경 상시(무료) / 요트투어 11:00~22:00 (약 50분)', price:'야경·포토존 무료 / 야간 요트 34,000~ (선셋 39,000~)',
-     best:'일몰~야경, 마린시티·광안대교 · 야간 요트=불꽃', booking:'요트투어 사전예약',
-     tip:'요트 안 타도 야경 무료 · 피쉬앤칩스+맥주 · 매장이용시 주차권', addr:'해운대구 동백로 52'},
   ]},
   {day:3, items:[
     {name:'오륙도 스카이워크', cat:'해안 절벽 스카이워크', rating:'★ 4.5 (무료 대비 만족↑)',
@@ -179,6 +176,10 @@ const SPOTS = [
      hours:'해변 상시 / 드론쇼=매주 토 20:00·22:00 (약 12분)', price:'무료',
      best:'광안대교 야경 · 해변 카페거리', booking:'불필요',
      tip:'⚠️ 드론쇼는 토요일만 → 이번 일정(일~수)엔 정규공연 없음, 야경만', addr:'수영구 광안해변로'},
+    {name:'더베이101', cat:'야경 명소 · 요트투어', rating:'★ 4.4',
+     hours:'야경 상시(무료) / 요트투어 11:00~22:00 (약 50분)', price:'야경·포토존 무료 / 야간 요트 34,000~ (선셋 39,000~)',
+     best:'광안리 야경 후 해운대 복귀 동선 · 마린시티 야경', booking:'요트투어 사전예약',
+     tip:'요트 안 타도 야경 무료 · 피쉬앤칩스+맥주 · 매장이용시 주차권', addr:'해운대구 동백로 52'},
   ]},
   {day:4, items:[
     {name:'송도 해상케이블카', cat:'해상 케이블카 (국내 최장)', rating:'★ 4.6+',

@@ -126,7 +126,7 @@ const DAYS = {
 const C = {
   hotel:[35.1583,129.1618], beach:[35.1588,129.1600], xsky:[35.1602,129.1693],
   mipo:[35.1605,129.1738], bay:[35.1558,129.1502], oryukdo:[35.1017,129.1247],
-  gwangalli:[35.1531,129.1188], songdo:[35.0760,129.0165], nampo:[35.0975,129.0305],
+  songdo:[35.0760,129.0165], nampo:[35.0975,129.0305],
   busan:[35.1152,129.0424]
 };
 const PLACES = [
@@ -138,8 +138,7 @@ const PLACES = [
   {day:2,seq:2,name:'블루라인파크(미포정거장)',pos:C.mipo,addr:'해운대구 청사포로 116',time:'16:00~18:30',cost:'스카이캡슐 3인승 편도 45,000',tip:'미포→청사포 캡슐 → 해변열차 복귀 · 늦은 오후 바다빛 · 사전예약 필수'},
   {day:3,seq:1,name:'오륙도 스카이워크',pos:C.oryukdo,addr:'남구 오륙도로 137',time:'09:30',cost:'무료',tip:'오전 추천 · 투명유리, 덧신 착용 · 이기대 해안산책로'},
   {day:3,seq:2,name:'해운대 해변/호텔 수영장',pos:C.beach,addr:'해운대구',time:'14:00',cost:'무료(파라솔 1만)',tip:'오륙도 후 해운대로 돌아와 오후 물놀이·휴식'},
-  {day:3,seq:3,name:'광안리 해수욕장',pos:C.gwangalli,addr:'수영구 광안해변로',time:'19:00',cost:'무료',tip:'저녁 식사 후 광안대교 야경 · 드론쇼는 토요일만이라 제외'},
-  {day:3,seq:4,name:'더베이101',pos:C.bay,addr:'해운대구 동백로 52',time:'20:30',cost:'야경 무료 / 야간요트 34,000~',tip:'광안리 야경 후 해운대 복귀 동선에서 마린시티 야경 · 요트는 사전예약'},
+  {day:3,seq:3,name:'더베이101',pos:C.bay,addr:'해운대구 동백로 52',time:'19:30 도착 / 20:00 요트',cost:'야경 무료 / 야간요트 34,000~',tip:'해운대에서 바로 이동해 마린시티 야경 · 20시 요트 출발, 사전예약'},
   {day:4,seq:1,name:'송도 해상케이블카',pos:C.songdo,addr:'서구 송도해변로 171',time:'11:30',cost:'크리스탈 왕복 24,000',tip:'투명바닥 크리스탈크루즈 · 송도구름산책로'},
   {day:4,seq:2,name:'자갈치·남포동(점심)',pos:C.nampo,addr:'중구 남포동',time:'13:30',cost:'-',tip:'송도와 가까움 · 점심'},
   {day:4,seq:3,station:true,name:'SRT 부산역 (출발)',pos:C.busan,addr:'동구 중앙대로 206',time:'출발',cost:'-',tip:'짐 라커 보관 추천'},
@@ -147,7 +146,7 @@ const PLACES = [
 const ROUTES = {
   1:[C.busan,C.hotel,C.beach,C.xsky,C.hotel],
   2:[C.hotel,C.beach,C.mipo,C.hotel],
-  3:[C.hotel,C.oryukdo,C.beach,C.gwangalli,C.bay,C.hotel],
+  3:[C.hotel,C.oryukdo,C.beach,C.bay,C.hotel],
   4:[C.hotel,C.songdo,C.nampo,C.busan],
 };
 const SPOTS = [
@@ -172,13 +171,9 @@ const SPOTS = [
      hours:'09:00~18:00 (6~9월 ~19:00) · 우천·강풍시 통제', price:'무료 (주차 1일 최대 8,000)',
      best:'오전(빛·주차 유리) · 체류 약 20분', booking:'불필요',
      tip:'덧신 착용 · 이기대 해안산책로와 묶기 · 동해/남해 경계', addr:'남구 오륙도로 137'},
-    {name:'광안리 해수욕장 (+드론쇼)', cat:'해변 · 광안대교 야경', rating:'★ 대표 야경',
-     hours:'해변 상시 / 드론쇼=매주 토 20:00·22:00 (약 12분)', price:'무료',
-     best:'광안대교 야경 · 해변 카페거리', booking:'불필요',
-     tip:'⚠️ 드론쇼는 토요일만 → 이번 일정(일~수)엔 정규공연 없음, 야경만', addr:'수영구 광안해변로'},
     {name:'더베이101', cat:'야경 명소 · 요트투어', rating:'★ 4.4',
      hours:'야경 상시(무료) / 요트투어 11:00~22:00 (약 50분)', price:'야경·포토존 무료 / 야간 요트 34,000~ (선셋 39,000~)',
-     best:'광안리 야경 후 해운대 복귀 동선 · 마린시티 야경', booking:'요트투어 사전예약',
+     best:'19:30 전후 도착 → 20:00 야간 요트 출발', booking:'요트투어 사전예약',
      tip:'요트 안 타도 야경 무료 · 피쉬앤칩스+맥주 · 매장이용시 주차권', addr:'해운대구 동백로 52'},
   ]},
   {day:4, items:[
@@ -197,10 +192,6 @@ const RESTAURANTS = [
     {name:'거대갈비', cat:'소고기구이', addr:'해운대구 중동 1139-4'},
     {name:'개미집 국제시장본점', cat:'낙지요리', addr:'해운대구 우동 1338'},
     {name:'해운대 가야밀면', cat:'밀면·국수', addr:'해운대구 좌동 1352-1'},
-  ]},
-  {area:'🌊 광안·수영권', hint:'Day 3 광안리 근처', items:[
-    {name:'무쇠김치삼겹 광안점', cat:'돼지고기구이', addr:'수영구 광안동 202-7 1층'},
-    {name:'새벽집', cat:'국밥', addr:'수영구 민락동 176-32'},
   ]},
   {area:'🚋 기장권 (송정·장안)', hint:'Day 2 블루라인파크(송정) 근처', items:[
     {name:'송정돌판낙지볶음', cat:'낙지요리', addr:'기장군 기장읍 시랑리 722'},

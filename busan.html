@@ -28,6 +28,9 @@
   .chip[data-day="2"].active{background:var(--d2);}
   .chip[data-day="3"].active{background:var(--d3);}
   .chip[data-day="4"].active{background:var(--d4);}
+  .map-actions{display:flex;justify-content:flex-end;margin:0 0 12px;}
+  .map-folder-link{display:inline-flex;align-items:center;gap:6px;text-decoration:none;background:#fee500;color:#181600;border:1px solid #e6cf00;border-radius:9px;padding:8px 12px;font-size:13px;font-weight:800;box-shadow:0 2px 8px rgba(15,23,42,.08);}
+  .map-folder-link:hover{background:#f5dc00;}
   #map{width:100%;height:60vh;min-height:400px;border-radius:16px;box-shadow:0 6px 24px rgba(15,23,42,.12);overflow:hidden;}
   .maperr{display:flex;align-items:center;justify-content:center;height:100%;padding:30px;text-align:center;font-size:13px;color:var(--muted);line-height:1.8;background:#f1f5f9;}
   /* kakao markers */
@@ -91,6 +94,9 @@
       <button class="chip" data-day="2">Day 2 · 7/20</button>
       <button class="chip" data-day="3">Day 3 · 7/21</button>
       <button class="chip" data-day="4">Day 4 · 7/22</button>
+    </div>
+    <div class="map-actions">
+      <a class="map-folder-link" href="https://map.kakao.com/?map_type=TYPE_MAP&amp;folderid=6373463&amp;target=other&amp;page=bookmark" target="_blank" rel="noopener">카카오맵 저장 지도 열기</a>
     </div>
     <div id="map"><div class="maperr">지도를 불러오는 중…</div></div>
     <h2 class="sec">📋 날짜별 일정</h2>

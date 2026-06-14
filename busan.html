@@ -132,7 +132,7 @@ const C = {
 const PLACES = [
   {day:0,seq:'🏨',hotel:true,name:'그랜드 조선 부산',pos:C.hotel,addr:'해운대구 해운대해변로 292',cost:'오션뷰 1박 30만~45만(예상)',tip:'체크인 15:00/아웃 11:00 · 6층 오션뷰 인피니티풀'},
   {day:1,seq:'',station:true,name:'SRT 부산역 (도착)',pos:C.busan,addr:'동구 중앙대로 206',time:'오후 도착',cost:'-',tip:'택시로 해운대 호텔 이동 (약 30~40분)'},
-  {day:1,seq:1,name:'해운대 해수욕장',pos:C.beach,addr:'해운대구 중동2로 11',time:'15:30~',cost:'무료',tip:'도착 첫날 가볍게 산책/물놀이'},
+  {day:1,seq:1,name:'호텔 인피니티풀',pos:C.hotel,addr:'그랜드 조선 부산 6층',time:'15:30~',cost:'숙박 포함/이용 조건 확인',tip:'첫날 해운대 해수욕장은 패스 · 오션뷰 야외 수영장에서 가볍게 휴식'},
   {day:1,seq:2,name:'부산 엑스더스카이',pos:C.xsky,addr:'해운대구 달맞이길 30',time:'18:30',cost:'27,000원(온라인 ~23,200)',tip:'일몰 30분 전 입장 → 노을+야경 · 100층 스타벅스'},
   {day:2,seq:1,name:'해운대 해변/호텔 수영장',pos:C.beach,addr:'해운대구',time:'09:00',cost:'무료(파라솔 1만)',tip:'다음날 호텔 수영장 휴무라 Day 2에 여유 있게 물놀이·휴식'},
   {day:3,seq:1,name:'오륙도 스카이워크',pos:C.oryukdo,addr:'남구 오륙도로 137',time:'09:30',cost:'무료',tip:'오전 추천 · 투명유리, 덧신 착용 · 이기대 해안산책로'},
@@ -144,21 +144,23 @@ const PLACES = [
   {day:4,seq:3,station:true,name:'SRT 부산역 (출발)',pos:C.busan,addr:'동구 중앙대로 206',time:'출발',cost:'-',tip:'짐 라커 보관 추천'},
 ];
 const ROUTES = {
-  1:[C.busan,C.hotel,C.beach,C.xsky,C.hotel],
+  1:[C.busan,C.hotel,C.xsky,C.hotel],
   2:[C.hotel,C.beach,C.hotel],
   3:[C.hotel,C.oryukdo,C.beach,C.mipo,C.bay,C.hotel],
   4:[C.hotel,C.songdo,C.nampo,C.busan],
 };
 const SPOTS = [
   {day:1, items:[
-    {name:'해운대 해수욕장', cat:'해변 · 부산 대표 명소', rating:'',
-     hours:'입욕 09:00~18:00 (안전요원 근무)', price:'무료 (파라솔·튜브 1만 / 샤워 1천)',
-     best:'이른 오전 물놀이(한산) · 저녁 야경 산책', booking:'불필요',
-     tip:'동쪽 미포=일출 명소, 서쪽 동백섬=해안 산책로', addr:'해운대구 중동2로 11'},
     {name:'부산 엑스더스카이', cat:'전망대 · 엘시티 100층(411m)', rating:'★ 4.6',
      hours:'10:00~21:00 (입장마감 20:30) · 연중무휴', price:'대인 27,000 / 소인·경로 24,000 (온라인 ~23,200)',
      best:'일몰 30분~1시간 전 입장 → 노을+야경', booking:'온라인 예매 권장(할인+대기↓)',
      tip:'100층 스타벅스(세계 최고층)·유리바닥 · 2시간 무료주차', addr:'해운대구 달맞이길 30'},
+  ]},
+  {day:2, items:[
+    {name:'해운대 해수욕장', cat:'해변 · 부산 대표 명소', rating:'',
+     hours:'입욕 09:00~18:00 (안전요원 근무)', price:'무료 (파라솔·튜브 1만 / 샤워 1천)',
+     best:'이른 오전 물놀이(한산) · 저녁 야경 산책', booking:'불필요',
+     tip:'첫날은 패스하고 Day 2/3에 해변 물놀이·휴식 중심으로 이용', addr:'해운대구 중동2로 11'},
   ]},
   {day:3, items:[
     {name:'오륙도 스카이워크', cat:'해안 절벽 스카이워크', rating:'★ 4.5 (무료 대비 만족↑)',

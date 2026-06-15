@@ -126,7 +126,7 @@ const DAYS = {
 const C = {
   hotel:[35.1583,129.1618], beach:[35.1588,129.1600], xsky:[35.1602,129.1693],
   mipo:[35.1605,129.1738], bay:[35.1558,129.1502], oryukdo:[35.1017,129.1247],
-  songdo:[35.0760,129.0165], nampo:[35.0975,129.0305],
+  songdo:[35.0760,129.0165], sundubu:[35.0770,129.0205], nampo:[35.0975,129.0305],
   busan:[35.1152,129.0424]
 };
 const PLACES = [
@@ -140,14 +140,14 @@ const PLACES = [
   {day:3,seq:3,name:'블루라인파크(미포정거장)',pos:C.mipo,addr:'해운대구 청사포로 116',time:'16:00~18:30',cost:'스카이캡슐 3인승 편도 45,000',tip:'미포→청사포 캡슐 → 해변열차 복귀 · 종료 후 더베이101까지 택시 10~15분'},
   {day:3,seq:4,name:'더베이101',pos:C.bay,addr:'해운대구 동백로 52',time:'19:00 도착 / 20:00 요트',cost:'야경 무료 / 야간요트 34,000~',tip:'블루라인파크 후 이동 · 20시 요트 출발, 사전예약'},
   {day:4,seq:1,name:'송도 해상케이블카',pos:C.songdo,addr:'서구 송도해변로 171',time:'11:30',cost:'크리스탈 왕복 24,000',tip:'투명바닥 크리스탈크루즈 · 송도구름산책로'},
-  {day:4,seq:2,name:'자갈치·남포동(점심)',pos:C.nampo,addr:'중구 남포동',time:'13:30',cost:'-',tip:'송도와 가까움 · 점심'},
+  {day:4,seq:2,name:'북창동순두부 부산송도점',pos:C.sundubu,addr:'서구 송도해변로 97 2층 202호, 203호',time:'13:30',cost:'-',tip:'송도 케이블카 근처 점심 · 대안으로 자갈치/남포동 이동 가능',naverUrl:'https://pcmap.place.naver.com/restaurant/1139642400/home?entry=bmp&from=map&fromPanelNum=2&timestamp=202606150849&locale=ko&svcName=map_pcv5&searchText=%EC%9D%8C%EC%8B%9D%EC%A0%90#'},
   {day:4,seq:3,station:true,name:'SRT 부산역 (출발)',pos:C.busan,addr:'동구 중앙대로 206',time:'출발',cost:'-',tip:'짐 라커 보관 추천'},
 ];
 const ROUTES = {
   1:[C.busan,C.hotel,C.xsky,C.hotel],
   2:[C.hotel,C.beach,C.hotel],
   3:[C.hotel,C.oryukdo,C.beach,C.mipo,C.bay,C.hotel],
-  4:[C.hotel,C.songdo,C.nampo,C.busan],
+  4:[C.hotel,C.songdo,C.sundubu,C.busan],
 };
 const SPOTS = [
   {day:1, items:[
@@ -197,7 +197,8 @@ const RESTAURANTS = [
     {name:'송정돌판낙지볶음', cat:'낙지요리', addr:'기장군 기장읍 시랑리 722'},
     {name:'해운대국제갈비', cat:'고기요리', addr:'기장군 장안읍 좌천리 40-1'},
   ]},
-  {area:'🏙 중구·원도심 (남포동)', hint:'Day 4 송도·남포동 근처', items:[
+  {area:'🏙 서구·중구 (송도·남포동)', hint:'Day 4 송도·남포동 근처', items:[
+    {name:'북창동순두부 부산송도점', cat:'순두부', addr:'서구 송도해변로 97 2층 202호, 203호', naverUrl:'https://pcmap.place.naver.com/restaurant/1139642400/home?entry=bmp&from=map&fromPanelNum=2&timestamp=202606150849&locale=ko&svcName=map_pcv5&searchText=%EC%9D%8C%EC%8B%9D%EC%A0%90#'},
     {name:'이재모피자 본점', cat:'피자', addr:'중구 신창동1가 2-1'},
   ]},
 ];
@@ -270,11 +271,12 @@ RESTAURANTS.forEach(group=>{
   const cards=document.createElement('div'); cards.className='cards';
   group.items.forEach(r=>{
     const L2=links(r.name);
+    const naverUrl = r.naverUrl || L2.nv;
     const card=document.createElement('div'); card.className='food-card';
     card.innerHTML=`<div class="food-top"><span class="food-name">${r.name}</span><span class="food-cat">${r.cat}</span></div>
       <div class="food-addr">📍 ${r.addr}</div>
       <div class="food-links">
-        <a href="${L2.nv}" target="_blank" rel="noopener">네이버지도</a>
+        <a href="${naverUrl}" target="_blank" rel="noopener">네이버지도</a>
         <a href="${L2.kk}" target="_blank" rel="noopener">카카오맵</a>
         <a href="${L2.rt}" target="_blank" rel="noopener">길찾기 🚕</a>
       </div>`;
@@ -297,6 +299,7 @@ document.querySelectorAll('.tab').forEach(tab=>{
 /* ===== 카카오 지도 ===== */
 function popupHTML(p){
   const Lk=links(p.name);
+  const naverUrl = p.naverUrl || Lk.nv;
   const dlabel = p.day===0?'숙소':DAYS[p.day].label;
   const num = (p.hotel||p.station)?'':`<span style="color:${DAYS[p.day].color}">${p.seq}.</span> `;
   return `<button class="kpop-x" aria-label="닫기">×</button>
@@ -306,7 +309,7 @@ function popupHTML(p){
     ${p.cost&&p.cost!=='-'?`<div class="pop-row">💰 ${p.cost}</div>`:''}
     ${p.tip?`<div class="pop-row">💡 ${p.tip}</div>`:''}
     <div class="pop-links">
-      <a href="${Lk.nv}" target="_blank" rel="noopener">네이버지도</a>
+      <a href="${naverUrl}" target="_blank" rel="noopener">네이버지도</a>
       <a href="${Lk.kk}" target="_blank" rel="noopener">카카오맵</a>
       ${p.hotel?'':`<a href="${Lk.rt}" target="_blank" rel="noopener">길찾기 🚕</a>`}
     </div>`;

@@ -201,6 +201,13 @@ const RESTAURANTS = [
     {name:'북창동순두부 부산송도점', cat:'순두부', addr:'서구 송도해변로 97 2층 202호, 203호', naverUrl:'https://pcmap.place.naver.com/restaurant/1139642400/home?entry=bmp&from=map&fromPanelNum=2&timestamp=202606150849&locale=ko&svcName=map_pcv5&searchText=%EC%9D%8C%EC%8B%9D%EC%A0%90#'},
     {name:'이재모피자 본점', cat:'피자', addr:'중구 신창동1가 2-1'},
   ]},
+  {area:'📼 영상 속 부산 로컬 후보', hint:'상호가 명확하지 않은 곳은 골목/동네 기준 검색으로 연결', items:[
+    {name:'남포동 완당집', cat:'완당', addr:'중구 남포동 골목 일대', mapName:'부산 남포동 완당'},
+    {name:'남포동 지짐골목', cat:'분식·튀김', addr:'중구 남포동 지짐골목 일대', mapName:'남포동 지짐골목'},
+    {name:'칠암항 해녀 해산물', cat:'해산물', addr:'기장군 일광읍 칠암항 일대', mapName:'칠암항 해녀'},
+    {name:'토곡 34년 분식집', cat:'분식', addr:'연제구 토곡/연산동 일대', mapName:'부산 토곡 분식집'},
+    {name:'범천동 옥상마을 생아구찜', cat:'아귀찜', addr:'부산진구 범천동 옥상마을 일대', mapName:'범천동 옥상마을 아귀찜'},
+  ]},
 ];
 
 function links(name){
@@ -270,7 +277,7 @@ RESTAURANTS.forEach(group=>{
   block.innerHTML=`<div class="area-head">${group.area}</div><div class="area-hint">${group.hint}</div>`;
   const cards=document.createElement('div'); cards.className='cards';
   group.items.forEach(r=>{
-    const L2=links(r.name);
+    const L2=links(r.mapName || r.name);
     const naverUrl = r.naverUrl || L2.nv;
     const card=document.createElement('div'); card.className='food-card';
     card.innerHTML=`<div class="food-top"><span class="food-name">${r.name}</span><span class="food-cat">${r.cat}</span></div>

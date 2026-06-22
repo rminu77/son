@@ -104,7 +104,7 @@
   </section>
 
   <section id="tab-spot" class="tabpane">
-    <div class="food-intro">🏛️ 일정에 들어간 관광지 7곳의 운영시간·요금·추천 시간대·예약·팁을 정리했어요. 요금/일정은 2026년 7월 기준 조사값이라 방문 직전 재확인을 권합니다.</div>
+    <div class="food-intro">🏛️ 일정 관광지와 예비 후보의 운영시간·요금·추천 시간대·예약·팁을 정리했어요. 요금/일정은 2026년 7월 기준 조사값이라 방문 직전 재확인을 권합니다.</div>
     <div id="spotlist"></div>
   </section>
 
@@ -139,15 +139,13 @@ const PLACES = [
   {day:3,seq:2,name:'해운대 해변',pos:C.beach,addr:'해운대구',time:'14:00',cost:'무료(파라솔 1만)',tip:'호텔 수영장 휴무일 · 해변 물놀이/카페 휴식 중심'},
   {day:3,seq:3,name:'블루라인파크(미포정거장)',pos:C.mipo,addr:'해운대구 달맞이길62번길 13',time:'16:00~18:30',cost:'스카이캡슐 3인승 편도 45,000',tip:'미포→청사포 캡슐 → 해변열차 복귀 · 종료 후 더베이101까지 택시 10~15분',mapName:'해운대블루라인파크 미포정거장'},
   {day:3,seq:4,name:'더베이101',pos:C.bay,addr:'해운대구 동백로 52',time:'19:00 도착 / 20:00 요트',cost:'야경 무료 / 야간요트 34,000~',tip:'블루라인파크 후 이동 · 20시 요트 출발, 사전예약'},
-  {day:4,seq:1,name:'송도 해상케이블카',pos:C.songdo,addr:'서구 송도해변로 171',time:'11:30',cost:'크리스탈 왕복 24,000',tip:'투명바닥 크리스탈크루즈 · 송도구름산책로'},
-  {day:4,seq:2,name:'북창동순두부 부산송도점',pos:C.sundubu,addr:'서구 송도해변로 97 2층 202호, 203호',time:'13:30',cost:'-',tip:'송도 케이블카 근처 점심 · 대안으로 자갈치/남포동 이동 가능',naverUrl:'https://pcmap.place.naver.com/restaurant/1139642400/home?entry=bmp&from=map&fromPanelNum=2&timestamp=202606150849&locale=ko&svcName=map_pcv5&searchText=%EC%9D%8C%EC%8B%9D%EC%A0%90#'},
-  {day:4,seq:3,station:true,name:'SRT 부산역 (출발)',pos:C.busan,addr:'동구 중앙대로 206',time:'출발',cost:'-',tip:'짐 라커 보관 추천'},
+  {day:4,seq:1,station:true,name:'SRT 부산역 (출발)',pos:C.busan,addr:'동구 중앙대로 206',time:'12:00까지 도착',cost:'-',tip:'퇴실 하자마자 택시 이동 · 해운대→부산역 약 30~40분, 여유 있게 11:00 전후 출발'},
 ];
 const ROUTES = {
   1:[C.busan,C.hotel,C.xsky,C.hotel],
   2:[C.hotel,C.beach,C.hotel],
   3:[C.hotel,C.oryukdo,C.beach,C.mipo,C.bay,C.hotel],
-  4:[C.hotel,C.songdo,C.sundubu,C.busan],
+  4:[C.hotel,C.busan],
 };
 const SPOTS = [
   {day:1, items:[
@@ -177,10 +175,10 @@ const SPOTS = [
      tip:'요트 안 타도 야경 무료 · 피쉬앤칩스+맥주 · 매장이용시 주차권', addr:'해운대구 동백로 52'},
   ]},
   {day:4, items:[
-    {name:'송도 해상케이블카', cat:'해상 케이블카 (국내 최장)', rating:'★ 4.6+',
+    {name:'송도 해상케이블카', cat:'해상 케이블카 (시간상 예비 후보)', rating:'★ 4.6+',
      hours:'09:00~21:00 (7~8월 ~22:00) · 매표 마감 30분 전', price:'왕복 일반 19,000 / 크리스탈(투명바닥) 24,000',
-     best:'일몰·야경 인기 · 대낮 바다빛도 좋음', booking:'성수기·주말 온라인 권장',
-     tip:'크리스탈캐빈 투명바닥 · 송도구름산책로·용궁구름다리 · 주말 2시간 무료주차', addr:'서구 송도해변로 171 (송도베이스테이션)'},
+     best:'마지막날은 12:00 부산역 도착 때문에 일정 제외 · 다른 날 여유 있을 때만 후보', booking:'성수기·주말 온라인 권장',
+     tip:'크리스탈캐빈 투명바닥 · 송도구름산책로·용궁구름다리 · 해운대 숙소 기준 왕복 동선이 길어 마지막날 비추천', addr:'서구 송도해변로 171 (송도베이스테이션)'},
   ]},
 ];
 const RESTAURANTS = [
@@ -197,7 +195,7 @@ const RESTAURANTS = [
     {name:'송정돌판낙지볶음', cat:'낙지요리', addr:'기장군 기장읍 시랑리 722'},
     {name:'해운대국제갈비', cat:'고기요리', addr:'기장군 장안읍 좌천리 40-1'},
   ]},
-  {area:'🏙 서구·중구 (송도·남포동)', hint:'Day 4 송도·남포동 근처', items:[
+  {area:'🏙 서구·중구 (송도·남포동)', hint:'마지막날은 12:00 부산역 도착이라 일정 제외 후보', items:[
     {name:'북창동순두부 부산송도점', cat:'순두부', addr:'서구 송도해변로 97 2층 202호, 203호', naverUrl:'https://pcmap.place.naver.com/restaurant/1139642400/home?entry=bmp&from=map&fromPanelNum=2&timestamp=202606150849&locale=ko&svcName=map_pcv5&searchText=%EC%9D%8C%EC%8B%9D%EC%A0%90#'},
     {name:'이재모피자 본점', cat:'피자', addr:'중구 신창동1가 2-1'},
   ]},

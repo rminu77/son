@@ -124,10 +124,10 @@ const DAYS = {
   4:{label:'Day 4 · 7/22(수)',color:'#9333ea'},
 };
 const C = {
-  hotel:[35.1583,129.1618], beach:[35.1588,129.1600], xsky:[35.1602,129.1693],
-  mipo:[35.1605,129.1738], bay:[35.1558,129.1502], oryukdo:[35.1017,129.1247],
-  songdo:[35.0760,129.0165], sundubu:[35.0770,129.0205], nampo:[35.0975,129.0305],
-  busan:[35.1152,129.0424]
+  hotel:[35.16015,129.16322], beach:[35.15778,129.15813], xsky:[35.15983,129.16974],
+  mipo:[35.15817,129.17283], bay:[35.15647,129.15197], oryukdo:[35.10057,129.12473],
+  songdo:[35.07633,129.02354], sundubu:[35.07713,129.01785], nampo:[35.0975,129.0305],
+  busan:[35.11555,129.04259]
 };
 const PLACES = [
   {day:0,seq:'🏨',hotel:true,name:'그랜드 조선 부산',pos:C.hotel,addr:'해운대구 해운대해변로 292',cost:'오션뷰 1박 30만~45만(예상)',tip:'체크인 15:00/아웃 11:00 · 6층 오션뷰 인피니티풀'},
@@ -137,7 +137,7 @@ const PLACES = [
   {day:2,seq:1,name:'해운대 해변/호텔 수영장',pos:C.beach,addr:'해운대구',time:'09:00',cost:'무료(파라솔 1만)',tip:'다음날 호텔 수영장 휴무라 Day 2에 여유 있게 물놀이·휴식'},
   {day:3,seq:1,name:'오륙도 스카이워크',pos:C.oryukdo,addr:'남구 오륙도로 137',time:'09:30',cost:'무료',tip:'오전 추천 · 투명유리, 덧신 착용 · 이기대 해안산책로'},
   {day:3,seq:2,name:'해운대 해변',pos:C.beach,addr:'해운대구',time:'14:00',cost:'무료(파라솔 1만)',tip:'호텔 수영장 휴무일 · 해변 물놀이/카페 휴식 중심'},
-  {day:3,seq:3,name:'블루라인파크(미포정거장)',pos:C.mipo,addr:'해운대구 청사포로 116',time:'16:00~18:30',cost:'스카이캡슐 3인승 편도 45,000',tip:'미포→청사포 캡슐 → 해변열차 복귀 · 종료 후 더베이101까지 택시 10~15분'},
+  {day:3,seq:3,name:'블루라인파크(미포정거장)',pos:C.mipo,addr:'해운대구 달맞이길62번길 13',time:'16:00~18:30',cost:'스카이캡슐 3인승 편도 45,000',tip:'미포→청사포 캡슐 → 해변열차 복귀 · 종료 후 더베이101까지 택시 10~15분',mapName:'해운대블루라인파크 미포정거장'},
   {day:3,seq:4,name:'더베이101',pos:C.bay,addr:'해운대구 동백로 52',time:'19:00 도착 / 20:00 요트',cost:'야경 무료 / 야간요트 34,000~',tip:'블루라인파크 후 이동 · 20시 요트 출발, 사전예약'},
   {day:4,seq:1,name:'송도 해상케이블카',pos:C.songdo,addr:'서구 송도해변로 171',time:'11:30',cost:'크리스탈 왕복 24,000',tip:'투명바닥 크리스탈크루즈 · 송도구름산책로'},
   {day:4,seq:2,name:'북창동순두부 부산송도점',pos:C.sundubu,addr:'서구 송도해변로 97 2층 202호, 203호',time:'13:30',cost:'-',tip:'송도 케이블카 근처 점심 · 대안으로 자갈치/남포동 이동 가능',naverUrl:'https://pcmap.place.naver.com/restaurant/1139642400/home?entry=bmp&from=map&fromPanelNum=2&timestamp=202606150849&locale=ko&svcName=map_pcv5&searchText=%EC%9D%8C%EC%8B%9D%EC%A0%90#'},
@@ -170,7 +170,7 @@ const SPOTS = [
     {name:'해운대 블루라인파크', cat:'해변열차 · 스카이캡슐', rating:'★ 4.7',
      hours:'7~8월: 해변열차 09:00~21:30 / 스카이캡슐 08:30~20:30', price:'스카이캡슐 편도 2인4만·3인4.5만·4인5만 / 해변열차 8,000~10,000',
      best:'16:00~18:30 탑승 후 더베이101으로 이동', booking:'★스카이캡슐 사전예약 필수(4주 전 화 07:00 오픈)',
-     tip:'갈 때 캡슐·올 때 열차 추천 · 미포→더베이101 택시 10~15분 예상', addr:'해운대구 청사포로 116 (미포정거장)'},
+     tip:'갈 때 캡슐·올 때 열차 추천 · 미포→더베이101 택시 10~15분 예상', addr:'해운대구 달맞이길62번길 13 (미포정거장)'},
     {name:'더베이101', cat:'야경 명소 · 요트투어', rating:'★ 4.4',
      hours:'야경 상시(무료) / 요트투어 11:00~22:00 (약 50분)', price:'야경·포토존 무료 / 야간 요트 34,000~ (선셋 39,000~)',
      best:'블루라인파크 후 19:00 전후 도착 → 20:00 야간 요트 출발', booking:'요트투어 사전예약',
@@ -305,7 +305,7 @@ document.querySelectorAll('.tab').forEach(tab=>{
 
 /* ===== 카카오 지도 ===== */
 function popupHTML(p){
-  const Lk=links(p.name);
+  const Lk=links(p.mapName || p.name);
   const naverUrl = p.naverUrl || Lk.nv;
   const dlabel = p.day===0?'숙소':DAYS[p.day].label;
   const num = (p.hotel||p.station)?'':`<span style="color:${DAYS[p.day].color}">${p.seq}.</span> `;
